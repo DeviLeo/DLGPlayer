@@ -1,0 +1,20 @@
+/* 
+  DLGPlayerStrings.strings
+  DLGPlayer
+
+  Created by Liu Junqi on 05/12/2016.
+  Copyright © 2016 Liu Junqi. All rights reserved.
+*/
+"DLG_PLAYER_STRINGS_INVALID_URL" = "Invalid URL";
+"DLG_PLAYER_STRINGS_CANNOT_OPEN_INPUT" = "Cannot open input";
+"DLG_PLAYER_STRINGS_CANNOT_FIND_STREAM_INFO" = "Cannot find stream info";
+"DLG_PLAYER_STRINGS_NO_VIDEO_AND_AUDIO_STREAM" = "No video and audio streams";
+
+"DLG_PLAYER_STRINGS_NO_AUDIO_OUTPUT" = "No audio output";
+"DLG_PLAYER_STRINGS_NO_AUDIO_CHANNEL" = "No audio channel";
+"DLG_PLAYER_STRINGS_NO_AUDIO_SAMPLE_RATE" = "No audio sample rate";
+"DLG_PLAYER_STRINGS_NO_AUDIO_VOLUME" = "No audio volume";
+"DLG_PLAYER_STRINGS_FAILED_TO_GET_AUDIO_UNIT" = "Failed to get audio unit";
+"DLG_PLAYER_STRINGS_FAILED_TO_GET_AUDIO_STREAM_DESCRIPTION" = "Failed to get audio stream description";
+"DLG_PLAYER_STRINGS_FAILED_TO_SET_AUDIO_RENDER_CALLBACK" = "Failed to set audio render callback";
+"DLG_PLAYER_STRINGS_FAILED_TO_INIT_AUDIO_UNIT" = "Failed to initialize audio unit";

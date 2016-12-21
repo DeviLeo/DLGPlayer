@@ -1,0 +1,27 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "c0d11c02-cea6-2241-a6fc-c7daa13e666c",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "c0d11c02-cea6-2241-a6fc-c7daa13e666c" : {
+      "DVTSourceControlWorkingCopyRepositoryBranchesLocationKey" : "branches",
+      "DVTSourceControlWorkingCopyRepositoryTagsLocationKey" : "tags",
+      "DVTSourceControlWorkingCopyRepositoryPrimaryBranchLocationKey" : "trunk"
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "c0d11c02-cea6-2241-a6fc-c7daa13e666c" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "573A64D1-919F-4B27-A097-FA9C03D01C79",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "c0d11c02-cea6-2241-a6fc-c7daa13e666c" : "pinkart\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DLGPlayer",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "trunk\/04_Personal\/liujunqi\/DLGPlayer\/DLGPlayer.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/106.14.45.0\/svn\/PinkArt",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "c0d11c02-cea6-2241-a6fc-c7daa13e666c"
+    }
+  ]
+}
