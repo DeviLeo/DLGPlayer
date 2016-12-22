@@ -14,7 +14,7 @@ Great thanks for Konstantin Boukreev's kxmovie.
 Download and unzip ffmpeg-3.2.2.tar.bz2  
 
 #### (2) Use [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") to build FFmpeg for iOS  
-Follow the steps in the README.md of  kewlbear/FFmpeg-iOS-build-script to build FFmpeg for iOS.  
+Follow the steps in the [README.md](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") of [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") to build FFmpeg for iOS.  
 
 #### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 
@@ -23,13 +23,13 @@ Follow the steps in the README.md of  kewlbear/FFmpeg-iOS-build-script to build 
 Make sure those media files can be access by url (such as http://192.168.31.120/media.mp4) from browser.  
 
 #### (2) Modify code
-Open DLGPlayer/ViewController.m and change the \_tfUrl.text value to your media file's url.
+Open **DLGPlayer/ViewController.m** and change the **\_tfUrl.text** value to your media file's url.
 
 ### 3. Run demo
 Build project and run demo on your device or simulator.  
 
 ### 4. Usage
-#### (1) Use DLGPlayerViewController to play a media file with HUD.
+#### (1) Use *DLGPlayerViewController* to play a media file with HUD.
 ```Objective-C
     DLGPlayerViewController *vc = [[DLGPlayerViewController alloc] init];
     vc.autoplay = YES;
@@ -43,7 +43,7 @@ Build project and run demo on your device or simulator.
     [vc open];
 ```
 
-#### (2) Use DLGPlayer to play a media file without HUD.
+#### (2) Use *DLGPlayer* to play a media file without HUD.
 ```Objective-C
     DLGPlayer *player = [[DLGPlayer alloc] init];
     UIView *v = player.playerView;
@@ -53,7 +53,6 @@ Build project and run demo on your device or simulator.
     [player open:@"http://192.168.31.120/media.mp4"];
     [player play];
 ```
-See DLGPlayerViewController for more details.  
 
 ### 5. Required frameworks and libraries
 * Accelerate.framework
