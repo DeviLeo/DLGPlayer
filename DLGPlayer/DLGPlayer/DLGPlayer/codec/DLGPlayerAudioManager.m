@@ -19,11 +19,11 @@
 #define PREFERRED_BUFFER_DURATION 0.023
 
 static OSStatus audioUnitRenderCallback(void *inRefCon,
-                               AudioUnitRenderActionFlags *ioActionFlags,
-                               const AudioTimeStamp *inTimeStamp,
-                               UInt32 inBusNumber,
-                               UInt32 inNumberFrames,
-                               AudioBufferList *ioData);
+                                        AudioUnitRenderActionFlags *ioActionFlags,
+                                        const AudioTimeStamp *inTimeStamp,
+                                        UInt32 inBusNumber,
+                                        UInt32 inNumberFrames,
+                                        AudioBufferList *ioData);
 
 @interface DLGPlayerAudioManager () {
     BOOL _opened;
@@ -286,7 +286,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
             AudioBuffer buf = ioData->mBuffers[i];
             UInt32 channels = buf.mNumberChannels;
             for (UInt32 j = 0; j < channels; ++j) {
-                vDSP_vsadd(_audioData + i + j, _channelsPerFrame, &scalar, buf.mData + j, channels, inNumberFrames);
+                vDSP_vsadd(_audioData + i + j, _channelsPerFrame, &scalar, (float *)buf.mData + j, channels, inNumberFrames);
             }
         }
     } else if (_bitsPerChannel == 16) {
@@ -296,7 +296,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
             AudioBuffer buf = ioData->mBuffers[i];
             UInt32 channels = buf.mNumberChannels;
             for (UInt32 j = 0; j < channels; ++j) {
-                vDSP_vfix16(_audioData + i + j, _channelsPerFrame, buf.mData + j, channels, inNumberFrames);
+                vDSP_vfix16(_audioData + i + j, _channelsPerFrame, (short *)buf.mData + j, channels, inNumberFrames);
             }
         }
     }
