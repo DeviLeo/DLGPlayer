@@ -3,6 +3,12 @@ A media player for iOS based on FFmpeg 3.2.2.
 DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written.  
 Great thanks for Konstantin Boukreev's kxmovie.  
 
+### 0. Screenshots
+|Orientation|Audio|Video|
+|:---------:|:---:|:---:|
+|Portrait|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.00.52%20PM.png)|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.07.30%20PM.png)|
+|Landscape|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.01.05%20PM.png)|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.07.38%20PM.png)|
+
 ### 1. Build FFmpeg for iOS
 #### (1) Download FFmpeg source from [FFmpeg official site](http://ffmpeg.org/download.html "http://ffmpeg.org/download.html").  
 Download and unzip ffmpeg-3.2.2.tar.bz2  
@@ -23,7 +29,7 @@ Open DLGPlayer/ViewController.m and change the \_tfUrl.text value to your media 
 Build project and run demo on your device or simulator.  
 
 ### 4. Usage
-#### (1) You can use DLGPlayerViewController to play media file with HUD.
+#### (1) Use DLGPlayerViewController to play a media file with HUD.
 ```Objective-C
     DLGPlayerViewController *vc = [[DLGPlayerViewController alloc] init];
     vc.autoplay = YES;
@@ -37,7 +43,7 @@ Build project and run demo on your device or simulator.
     [vc open];
 ```
 
-#### (2) You can use DLGPlayer to play media file without HUD.
+#### (2) Use DLGPlayer to play a media file without HUD.
 ```Objective-C
     DLGPlayer *player = [[DLGPlayer alloc] init];
     UIView *v = player.playerView;
