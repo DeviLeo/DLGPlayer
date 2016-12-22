@@ -16,7 +16,7 @@ Download and unzip ffmpeg-3.2.2.tar.bz2
 #### (2) Use [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") to build FFmpeg for iOS  
 Follow the steps in the README.md of  kewlbear/FFmpeg-iOS-build-script to build FFmpeg for iOS.  
 
-#### (3) Put built FFmpeg include files and libraries into DLGPlayer/External/ffmpeg folder.  
+#### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 
 ### 2. Prepare media
 #### (1) Put any media files such as mp4 or mp3 into your server's folder.  
