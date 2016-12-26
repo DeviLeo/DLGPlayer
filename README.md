@@ -3,13 +3,13 @@ A media player for iOS based on FFmpeg 3.2.2.
 DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written.  
 Great thanks for Konstantin Boukreev's kxmovie.  
 
-### 0. Screenshots
+## 0. Screenshots
 |Orientation|Audio|Video|
 |:---------:|:---:|:---:|
 |Portrait|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.00.52%20PM.png)|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.07.30%20PM.png)|
 |Landscape|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.01.05%20PM.png)|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.07.38%20PM.png)|
 
-### 1. Build FFmpeg for iOS
+## 1. Build FFmpeg for iOS
 #### (1) Download FFmpeg source from [FFmpeg official site](http://ffmpeg.org/download.html "http://ffmpeg.org/download.html").  
 Download and unzip ffmpeg-3.2.2.tar.bz2  
 
@@ -18,17 +18,17 @@ Follow the steps in the [README.md](https://github.com/kewlbear/FFmpeg-iOS-build
 
 #### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 
-### 2. Prepare media
+## 2. Prepare media
 #### (1) Put any media files such as mp4 or mp3 into your server's folder.  
 Make sure those media files can be access by url (such as http://192.168.31.120/media.mp4) from browser.  
 
 #### (2) Modify code
 Open **DLGPlayer/ViewController.m** and change the **\_tfUrl.text** value to your media file's url.
 
-### 3. Run demo
+## 3. Run demo
 Build project and run demo on your device or simulator.  
 
-### 4. Usage
+## 4. Usage
 #### (1) Use *DLGPlayerViewController* to play a media file with HUD.
 ```Objective-C
     DLGPlayerViewController *vc = [[DLGPlayerViewController alloc] init];
@@ -53,8 +53,9 @@ Build project and run demo on your device or simulator.
     [player open:@"http://192.168.31.120/media.mp4"];
     [player play];
 ```
+See ***DLGPlayerViewController*** class for more usage details.
 
-### 5. Required frameworks and libraries
+## 5. Required frameworks and libraries
 * Accelerate.framework
 * AudioToolbox.framework
 * CoreAudio.framework
@@ -68,9 +69,14 @@ Build project and run demo on your device or simulator.
 * libbz2.tbd
 * libz.tbd
 
-### 6. References
+## 6. References
+* [FFmpeg](http://ffmpeg.org "http://ffmpeg.org")
 * [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie")
 * [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script")
 * [libav/gas-preprocessor](https://github.com/libav/gas-preprocessor "https://github.com/libav/gas-preprocessor")
-* [FFmpeg](http://ffmpeg.org "http://ffmpeg.org")
 * [Yasm](http://yasm.tortall.net "http://yasm.tortall.net")
+
+Thank you all!
+
+## 7. License
+See [LICENSE](https://github.com/DeviLeo/DLGPlayer/blob/master/LICENSE "LGPL-3.0").
