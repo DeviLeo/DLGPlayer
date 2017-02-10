@@ -392,6 +392,7 @@
     CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
     if (provider == NULL) return nil;
     CGImageRef image = CGImageCreateWithJPEGDataProvider(provider, NULL, YES, kCGRenderingIntentDefault);
+    if (image == NULL) image = CGImageCreateWithPNGDataProvider(provider, NULL, YES, kCGRenderingIntentDefault);
     if (image == NULL) { CGDataProviderRelease(provider); return nil; }
     
     size_t width = CGImageGetWidth(image);
