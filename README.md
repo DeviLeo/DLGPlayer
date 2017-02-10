@@ -36,7 +36,6 @@ Build project and run demo on your device or simulator.
     vc.repeat = YES;
     vc.preventFromScreenLock = YES;
     vc.restorePlayAfterAppEnterForeground = YES;
-    vc.view.translatesAutoresizingMaskIntoConstraints = YES;
     vc.view.frame = self.view.frame;
     [self.view addSubview:vc.view];
     vc.url = @"http://192.168.31.120/media.mp4";
@@ -47,7 +46,6 @@ Build project and run demo on your device or simulator.
 ```Objective-C
     DLGPlayer *player = [[DLGPlayer alloc] init];
     UIView *v = player.playerView;
-    v.translatesAutoresizingMaskIntoConstraints = NO;
     v.frame = self.view.frame;
     [self.view addSubview:v];
     [player open:@"http://192.168.31.120/media.mp4"];
