@@ -15,7 +15,6 @@
 		C11A1E431DED791A006256EB /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11A1E291DED6C20006256EB /* CoreAudio.framework */; };
 		C11A1E451DED7921006256EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11A1E441DED7921006256EB /* QuartzCore.framework */; };
 		C11A1E471DED7928006256EB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11A1E461DED7928006256EB /* OpenGLES.framework */; };
-		C187AE1B1E0A7CC8005C3408 /* DLGPlayerStrings.strings in Resources */ = {isa = PBXBuildFile; fileRef = C187AE1D1E0A7CC8005C3408 /* DLGPlayerStrings.strings */; };
 		C1C491A11DED4B6A0004B892 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C1C491A01DED4B6A0004B892 /* main.m */; };
 		C1C491A41DED4B6A0004B892 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C1C491A31DED4B6A0004B892 /* AppDelegate.m */; };
 		C1C491A71DED4B6A0004B892 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1C491A61DED4B6A0004B892 /* ViewController.m */; };
@@ -32,20 +31,21 @@
 		C1C4923D1DED4D020004B892 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C4923C1DED4D020004B892 /* libz.tbd */; };
 		C1C4923F1DED4D0C0004B892 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C4923E1DED4D0C0004B892 /* libbz2.tbd */; };
 		C1C492411DED4D130004B892 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C1C492401DED4D130004B892 /* libiconv.tbd */; };
-		E8B516A01E0552DC003042EE /* DLGPlayerAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516821E0552DC003042EE /* DLGPlayerAudioManager.m */; };
-		E8B516A11E0552DC003042EE /* DLGPlayerDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516841E0552DC003042EE /* DLGPlayerDecoder.m */; };
-		E8B516A21E0552DC003042EE /* DLGPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516881E0552DC003042EE /* DLGPlayerUtils.m */; };
-		E8B516A31E0552DC003042EE /* DLGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B5168A1E0552DC003042EE /* DLGPlayer.m */; };
-		E8B516A41E0552DC003042EE /* DLGPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B5168C1E0552DC003042EE /* DLGPlayerViewController.m */; };
-		E8B516A51E0552DC003042EE /* DLGPlayerAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B5168F1E0552DC003042EE /* DLGPlayerAudioFrame.m */; };
-		E8B516A61E0552DC003042EE /* DLGPlayerFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516911E0552DC003042EE /* DLGPlayerFrame.m */; };
-		E8B516A71E0552DC003042EE /* DLGPlayerVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516931E0552DC003042EE /* DLGPlayerVideoFrame.m */; };
-		E8B516A81E0552DC003042EE /* DLGPlayerVideoRGBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516951E0552DC003042EE /* DLGPlayerVideoRGBFrame.m */; };
-		E8B516A91E0552DC003042EE /* DLGPlayerVideoYUVFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B516971E0552DC003042EE /* DLGPlayerVideoYUVFrame.m */; };
-		E8B516AA1E0552DC003042EE /* DLGPlayerRGBFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8B516991E0552DC003042EE /* DLGPlayerRGBFragmentShader.glsl */; };
-		E8B516AC1E0552DC003042EE /* DLGPlayerVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8B5169B1E0552DC003042EE /* DLGPlayerVertexShader.glsl */; };
-		E8B516AD1E0552DC003042EE /* DLGPlayerYUVFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8B5169C1E0552DC003042EE /* DLGPlayerYUVFragmentShader.glsl */; };
-		E8B516AE1E0552DC003042EE /* DLGPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B5169F1E0552DC003042EE /* DLGPlayerView.m */; };
+		E8D77AB31E4F0A3F009C9777 /* DLGPlayerAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A921E4F0A3E009C9777 /* DLGPlayerAudioManager.m */; };
+		E8D77AB41E4F0A3F009C9777 /* DLGPlayerDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A941E4F0A3E009C9777 /* DLGPlayerDecoder.m */; };
+		E8D77AB51E4F0A3F009C9777 /* DLGPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A981E4F0A3E009C9777 /* DLGPlayerUtils.m */; };
+		E8D77AB61E4F0A3F009C9777 /* DLGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A9A1E4F0A3E009C9777 /* DLGPlayer.m */; };
+		E8D77AB71E4F0A3F009C9777 /* DLGPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A9C1E4F0A3E009C9777 /* DLGPlayerViewController.m */; };
+		E8D77AB81E4F0A3F009C9777 /* DLGPlayerAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77A9F1E4F0A3E009C9777 /* DLGPlayerAudioFrame.m */; };
+		E8D77AB91E4F0A3F009C9777 /* DLGPlayerFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AA11E4F0A3E009C9777 /* DLGPlayerFrame.m */; };
+		E8D77ABA1E4F0A3F009C9777 /* DLGPlayerVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AA31E4F0A3F009C9777 /* DLGPlayerVideoFrame.m */; };
+		E8D77ABB1E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AA51E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.m */; };
+		E8D77ABC1E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AA71E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.m */; };
+		E8D77ABD1E4F0A3F009C9777 /* DLGPlayerStrings.strings in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AA91E4F0A3F009C9777 /* DLGPlayerStrings.strings */; };
+		E8D77ABE1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AAB1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl */; };
+		E8D77ABF1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AAC1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl */; };
+		E8D77AC01E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AAD1E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl */; };
+		E8D77AC11E4F0A3F009C9777 /* DLGPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AB21E4F0A3F009C9777 /* DLGPlayerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,9 +58,6 @@
 		C11A1E411DED7913006256EB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		C11A1E441DED7921006256EB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C11A1E461DED7928006256EB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		C187AE1C1E0A7CC8005C3408 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/DLGPlayerStrings.strings; sourceTree = "<group>"; };
-		C187AE1E1E0A7CD4005C3408 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/DLGPlayerStrings.strings"; sourceTree = "<group>"; };
-		C187AE1F1E0A7DCB005C3408 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DLGPlayerStrings.strings; sourceTree = "<group>"; };
 		C1C4919C1DED4B6A0004B892 /* DLGPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLGPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C491A01DED4B6A0004B892 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C1C491A21DED4B6A0004B892 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -186,32 +183,35 @@
 		C1C4923C1DED4D020004B892 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C1C4923E1DED4D0C0004B892 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		C1C492401DED4D130004B892 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		E8B516811E0552DC003042EE /* DLGPlayerAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerAudioManager.h; sourceTree = "<group>"; };
-		E8B516821E0552DC003042EE /* DLGPlayerAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerAudioManager.m; sourceTree = "<group>"; };
-		E8B516831E0552DC003042EE /* DLGPlayerDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerDecoder.h; sourceTree = "<group>"; };
-		E8B516841E0552DC003042EE /* DLGPlayerDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerDecoder.m; sourceTree = "<group>"; };
-		E8B516861E0552DC003042EE /* DLGPlayerDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerDef.h; sourceTree = "<group>"; };
-		E8B516871E0552DC003042EE /* DLGPlayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerUtils.h; sourceTree = "<group>"; };
-		E8B516881E0552DC003042EE /* DLGPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerUtils.m; sourceTree = "<group>"; };
-		E8B516891E0552DC003042EE /* DLGPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayer.h; sourceTree = "<group>"; };
-		E8B5168A1E0552DC003042EE /* DLGPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayer.m; sourceTree = "<group>"; };
-		E8B5168B1E0552DC003042EE /* DLGPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerViewController.h; sourceTree = "<group>"; };
-		E8B5168C1E0552DC003042EE /* DLGPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerViewController.m; sourceTree = "<group>"; };
-		E8B5168E1E0552DC003042EE /* DLGPlayerAudioFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerAudioFrame.h; sourceTree = "<group>"; };
-		E8B5168F1E0552DC003042EE /* DLGPlayerAudioFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerAudioFrame.m; sourceTree = "<group>"; };
-		E8B516901E0552DC003042EE /* DLGPlayerFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerFrame.h; sourceTree = "<group>"; };
-		E8B516911E0552DC003042EE /* DLGPlayerFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerFrame.m; sourceTree = "<group>"; };
-		E8B516921E0552DC003042EE /* DLGPlayerVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoFrame.h; sourceTree = "<group>"; };
-		E8B516931E0552DC003042EE /* DLGPlayerVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoFrame.m; sourceTree = "<group>"; };
-		E8B516941E0552DC003042EE /* DLGPlayerVideoRGBFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoRGBFrame.h; sourceTree = "<group>"; };
-		E8B516951E0552DC003042EE /* DLGPlayerVideoRGBFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoRGBFrame.m; sourceTree = "<group>"; };
-		E8B516961E0552DC003042EE /* DLGPlayerVideoYUVFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoYUVFrame.h; sourceTree = "<group>"; };
-		E8B516971E0552DC003042EE /* DLGPlayerVideoYUVFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoYUVFrame.m; sourceTree = "<group>"; };
-		E8B516991E0552DC003042EE /* DLGPlayerRGBFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerRGBFragmentShader.glsl; sourceTree = "<group>"; };
-		E8B5169B1E0552DC003042EE /* DLGPlayerVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerVertexShader.glsl; sourceTree = "<group>"; };
-		E8B5169C1E0552DC003042EE /* DLGPlayerYUVFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerYUVFragmentShader.glsl; sourceTree = "<group>"; };
-		E8B5169E1E0552DC003042EE /* DLGPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerView.h; sourceTree = "<group>"; };
-		E8B5169F1E0552DC003042EE /* DLGPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerView.m; sourceTree = "<group>"; };
+		E8D77A911E4F0A3E009C9777 /* DLGPlayerAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerAudioManager.h; sourceTree = "<group>"; };
+		E8D77A921E4F0A3E009C9777 /* DLGPlayerAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerAudioManager.m; sourceTree = "<group>"; };
+		E8D77A931E4F0A3E009C9777 /* DLGPlayerDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerDecoder.h; sourceTree = "<group>"; };
+		E8D77A941E4F0A3E009C9777 /* DLGPlayerDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerDecoder.m; sourceTree = "<group>"; };
+		E8D77A961E4F0A3E009C9777 /* DLGPlayerDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerDef.h; sourceTree = "<group>"; };
+		E8D77A971E4F0A3E009C9777 /* DLGPlayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerUtils.h; sourceTree = "<group>"; };
+		E8D77A981E4F0A3E009C9777 /* DLGPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerUtils.m; sourceTree = "<group>"; };
+		E8D77A991E4F0A3E009C9777 /* DLGPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayer.h; sourceTree = "<group>"; };
+		E8D77A9A1E4F0A3E009C9777 /* DLGPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayer.m; sourceTree = "<group>"; };
+		E8D77A9B1E4F0A3E009C9777 /* DLGPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerViewController.h; sourceTree = "<group>"; };
+		E8D77A9C1E4F0A3E009C9777 /* DLGPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerViewController.m; sourceTree = "<group>"; };
+		E8D77A9E1E4F0A3E009C9777 /* DLGPlayerAudioFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerAudioFrame.h; sourceTree = "<group>"; };
+		E8D77A9F1E4F0A3E009C9777 /* DLGPlayerAudioFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerAudioFrame.m; sourceTree = "<group>"; };
+		E8D77AA01E4F0A3E009C9777 /* DLGPlayerFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerFrame.h; sourceTree = "<group>"; };
+		E8D77AA11E4F0A3E009C9777 /* DLGPlayerFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerFrame.m; sourceTree = "<group>"; };
+		E8D77AA21E4F0A3E009C9777 /* DLGPlayerVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoFrame.h; sourceTree = "<group>"; };
+		E8D77AA31E4F0A3F009C9777 /* DLGPlayerVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoFrame.m; sourceTree = "<group>"; };
+		E8D77AA41E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoRGBFrame.h; sourceTree = "<group>"; };
+		E8D77AA51E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoRGBFrame.m; sourceTree = "<group>"; };
+		E8D77AA61E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerVideoYUVFrame.h; sourceTree = "<group>"; };
+		E8D77AA71E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerVideoYUVFrame.m; sourceTree = "<group>"; };
+		E8D77AAA1E4F0A3F009C9777 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/DLGPlayerStrings.strings; sourceTree = "<group>"; };
+		E8D77AAB1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerRGBFragmentShader.glsl; sourceTree = "<group>"; };
+		E8D77AAC1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerVertexShader.glsl; sourceTree = "<group>"; };
+		E8D77AAD1E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerYUVFragmentShader.glsl; sourceTree = "<group>"; };
+		E8D77AAE1E4F0A3F009C9777 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DLGPlayerStrings.strings; sourceTree = "<group>"; };
+		E8D77AAF1E4F0A3F009C9777 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/DLGPlayerStrings.strings"; sourceTree = "<group>"; };
+		E8D77AB11E4F0A3F009C9777 /* DLGPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerView.h; sourceTree = "<group>"; };
+		E8D77AB21E4F0A3F009C9777 /* DLGPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,7 +263,7 @@
 		C1C4919E1DED4B6A0004B892 /* DLGPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				E8B5167F1E0552DC003042EE /* DLGPlayer */,
+				E8D77A8F1E4F0A3E009C9777 /* DLGPlayer */,
 				C1C491B61DED4BE80004B892 /* Externals */,
 				C1C491A21DED4B6A0004B892 /* AppDelegate.h */,
 				C1C491A31DED4B6A0004B892 /* AppDelegate.m */,
@@ -504,76 +504,77 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E8B5167F1E0552DC003042EE /* DLGPlayer */ = {
+		E8D77A8F1E4F0A3E009C9777 /* DLGPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				E8B516851E0552DC003042EE /* common */,
-				E8B516801E0552DC003042EE /* codec */,
-				E8B5168D1E0552DC003042EE /* frame */,
-				E8B5169D1E0552DC003042EE /* view */,
-				E8B516981E0552DC003042EE /* resource */,
-				E8B516891E0552DC003042EE /* DLGPlayer.h */,
-				E8B5168A1E0552DC003042EE /* DLGPlayer.m */,
-				E8B5168B1E0552DC003042EE /* DLGPlayerViewController.h */,
-				E8B5168C1E0552DC003042EE /* DLGPlayerViewController.m */,
+				E8D77A901E4F0A3E009C9777 /* codec */,
+				E8D77A951E4F0A3E009C9777 /* common */,
+				E8D77A9D1E4F0A3E009C9777 /* frame */,
+				E8D77AA81E4F0A3F009C9777 /* resource */,
+				E8D77AB01E4F0A3F009C9777 /* view */,
+				E8D77A991E4F0A3E009C9777 /* DLGPlayer.h */,
+				E8D77A9A1E4F0A3E009C9777 /* DLGPlayer.m */,
+				E8D77A9B1E4F0A3E009C9777 /* DLGPlayerViewController.h */,
+				E8D77A9C1E4F0A3E009C9777 /* DLGPlayerViewController.m */,
 			);
-			path = DLGPlayer;
+			name = DLGPlayer;
+			path = ../../DLGPlayer;
 			sourceTree = "<group>";
 		};
-		E8B516801E0552DC003042EE /* codec */ = {
+		E8D77A901E4F0A3E009C9777 /* codec */ = {
 			isa = PBXGroup;
 			children = (
-				E8B516811E0552DC003042EE /* DLGPlayerAudioManager.h */,
-				E8B516821E0552DC003042EE /* DLGPlayerAudioManager.m */,
-				E8B516831E0552DC003042EE /* DLGPlayerDecoder.h */,
-				E8B516841E0552DC003042EE /* DLGPlayerDecoder.m */,
+				E8D77A911E4F0A3E009C9777 /* DLGPlayerAudioManager.h */,
+				E8D77A921E4F0A3E009C9777 /* DLGPlayerAudioManager.m */,
+				E8D77A931E4F0A3E009C9777 /* DLGPlayerDecoder.h */,
+				E8D77A941E4F0A3E009C9777 /* DLGPlayerDecoder.m */,
 			);
 			path = codec;
 			sourceTree = "<group>";
 		};
-		E8B516851E0552DC003042EE /* common */ = {
+		E8D77A951E4F0A3E009C9777 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				E8B516861E0552DC003042EE /* DLGPlayerDef.h */,
-				E8B516871E0552DC003042EE /* DLGPlayerUtils.h */,
-				E8B516881E0552DC003042EE /* DLGPlayerUtils.m */,
+				E8D77A961E4F0A3E009C9777 /* DLGPlayerDef.h */,
+				E8D77A971E4F0A3E009C9777 /* DLGPlayerUtils.h */,
+				E8D77A981E4F0A3E009C9777 /* DLGPlayerUtils.m */,
 			);
 			path = common;
 			sourceTree = "<group>";
 		};
-		E8B5168D1E0552DC003042EE /* frame */ = {
+		E8D77A9D1E4F0A3E009C9777 /* frame */ = {
 			isa = PBXGroup;
 			children = (
-				E8B5168E1E0552DC003042EE /* DLGPlayerAudioFrame.h */,
-				E8B5168F1E0552DC003042EE /* DLGPlayerAudioFrame.m */,
-				E8B516901E0552DC003042EE /* DLGPlayerFrame.h */,
-				E8B516911E0552DC003042EE /* DLGPlayerFrame.m */,
-				E8B516921E0552DC003042EE /* DLGPlayerVideoFrame.h */,
-				E8B516931E0552DC003042EE /* DLGPlayerVideoFrame.m */,
-				E8B516941E0552DC003042EE /* DLGPlayerVideoRGBFrame.h */,
-				E8B516951E0552DC003042EE /* DLGPlayerVideoRGBFrame.m */,
-				E8B516961E0552DC003042EE /* DLGPlayerVideoYUVFrame.h */,
-				E8B516971E0552DC003042EE /* DLGPlayerVideoYUVFrame.m */,
+				E8D77A9E1E4F0A3E009C9777 /* DLGPlayerAudioFrame.h */,
+				E8D77A9F1E4F0A3E009C9777 /* DLGPlayerAudioFrame.m */,
+				E8D77AA01E4F0A3E009C9777 /* DLGPlayerFrame.h */,
+				E8D77AA11E4F0A3E009C9777 /* DLGPlayerFrame.m */,
+				E8D77AA21E4F0A3E009C9777 /* DLGPlayerVideoFrame.h */,
+				E8D77AA31E4F0A3F009C9777 /* DLGPlayerVideoFrame.m */,
+				E8D77AA41E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.h */,
+				E8D77AA51E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.m */,
+				E8D77AA61E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.h */,
+				E8D77AA71E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.m */,
 			);
 			path = frame;
 			sourceTree = "<group>";
 		};
-		E8B516981E0552DC003042EE /* resource */ = {
+		E8D77AA81E4F0A3F009C9777 /* resource */ = {
 			isa = PBXGroup;
 			children = (
-				C187AE1D1E0A7CC8005C3408 /* DLGPlayerStrings.strings */,
-				E8B5169B1E0552DC003042EE /* DLGPlayerVertexShader.glsl */,
-				E8B516991E0552DC003042EE /* DLGPlayerRGBFragmentShader.glsl */,
-				E8B5169C1E0552DC003042EE /* DLGPlayerYUVFragmentShader.glsl */,
+				E8D77AA91E4F0A3F009C9777 /* DLGPlayerStrings.strings */,
+				E8D77AAB1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl */,
+				E8D77AAC1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl */,
+				E8D77AAD1E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl */,
 			);
 			path = resource;
 			sourceTree = "<group>";
 		};
-		E8B5169D1E0552DC003042EE /* view */ = {
+		E8D77AB01E4F0A3F009C9777 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				E8B5169E1E0552DC003042EE /* DLGPlayerView.h */,
-				E8B5169F1E0552DC003042EE /* DLGPlayerView.m */,
+				E8D77AB11E4F0A3F009C9777 /* DLGPlayerView.h */,
+				E8D77AB21E4F0A3F009C9777 /* DLGPlayerView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -638,13 +639,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8B516AA1E0552DC003042EE /* DLGPlayerRGBFragmentShader.glsl in Resources */,
-				E8B516AD1E0552DC003042EE /* DLGPlayerYUVFragmentShader.glsl in Resources */,
 				C1C491AF1DED4B6A0004B892 /* LaunchScreen.storyboard in Resources */,
+				E8D77ABE1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl in Resources */,
 				C1C491AC1DED4B6A0004B892 /* Assets.xcassets in Resources */,
-				E8B516AC1E0552DC003042EE /* DLGPlayerVertexShader.glsl in Resources */,
-				C187AE1B1E0A7CC8005C3408 /* DLGPlayerStrings.strings in Resources */,
+				E8D77ABF1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl in Resources */,
+				E8D77ABD1E4F0A3F009C9777 /* DLGPlayerStrings.strings in Resources */,
 				C1C491AA1DED4B6A0004B892 /* Main.storyboard in Resources */,
+				E8D77AC01E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,36 +656,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8B516A71E0552DC003042EE /* DLGPlayerVideoFrame.m in Sources */,
+				E8D77ABB1E4F0A3F009C9777 /* DLGPlayerVideoRGBFrame.m in Sources */,
+				E8D77AB51E4F0A3F009C9777 /* DLGPlayerUtils.m in Sources */,
+				E8D77ABC1E4F0A3F009C9777 /* DLGPlayerVideoYUVFrame.m in Sources */,
 				C1C491A71DED4B6A0004B892 /* ViewController.m in Sources */,
-				E8B516A51E0552DC003042EE /* DLGPlayerAudioFrame.m in Sources */,
-				E8B516A91E0552DC003042EE /* DLGPlayerVideoYUVFrame.m in Sources */,
-				E8B516AE1E0552DC003042EE /* DLGPlayerView.m in Sources */,
-				E8B516A81E0552DC003042EE /* DLGPlayerVideoRGBFrame.m in Sources */,
-				E8B516A31E0552DC003042EE /* DLGPlayer.m in Sources */,
-				E8B516A21E0552DC003042EE /* DLGPlayerUtils.m in Sources */,
+				E8D77AB91E4F0A3F009C9777 /* DLGPlayerFrame.m in Sources */,
+				E8D77AC11E4F0A3F009C9777 /* DLGPlayerView.m in Sources */,
 				C1C491A41DED4B6A0004B892 /* AppDelegate.m in Sources */,
-				E8B516A61E0552DC003042EE /* DLGPlayerFrame.m in Sources */,
-				E8B516A11E0552DC003042EE /* DLGPlayerDecoder.m in Sources */,
-				E8B516A01E0552DC003042EE /* DLGPlayerAudioManager.m in Sources */,
 				C1C491A11DED4B6A0004B892 /* main.m in Sources */,
-				E8B516A41E0552DC003042EE /* DLGPlayerViewController.m in Sources */,
+				E8D77AB61E4F0A3F009C9777 /* DLGPlayer.m in Sources */,
+				E8D77AB41E4F0A3F009C9777 /* DLGPlayerDecoder.m in Sources */,
+				E8D77AB81E4F0A3F009C9777 /* DLGPlayerAudioFrame.m in Sources */,
+				E8D77AB31E4F0A3F009C9777 /* DLGPlayerAudioManager.m in Sources */,
+				E8D77ABA1E4F0A3F009C9777 /* DLGPlayerVideoFrame.m in Sources */,
+				E8D77AB71E4F0A3F009C9777 /* DLGPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C187AE1D1E0A7CC8005C3408 /* DLGPlayerStrings.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C187AE1C1E0A7CC8005C3408 /* Base */,
-				C187AE1E1E0A7CD4005C3408 /* zh-Hans */,
-				C187AE1F1E0A7DCB005C3408 /* en */,
-			);
-			name = DLGPlayerStrings.strings;
-			sourceTree = "<group>";
-		};
 		C1C491A81DED4B6A0004B892 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -699,6 +690,16 @@
 				C1C491AE1DED4B6A0004B892 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		E8D77AA91E4F0A3F009C9777 /* DLGPlayerStrings.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E8D77AAA1E4F0A3F009C9777 /* Base */,
+				E8D77AAE1E4F0A3F009C9777 /* en */,
+				E8D77AAF1E4F0A3F009C9777 /* zh-Hans */,
+			);
+			name = DLGPlayerStrings.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
