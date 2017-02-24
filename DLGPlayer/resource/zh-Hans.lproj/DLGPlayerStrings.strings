@@ -5,7 +5,7 @@
   Created by Liu Junqi on 05/12/2016.
   Copyright © 2016 Liu Junqi. All rights reserved.
 */
-"DLG_PLAYER_STRINGS_INVALID_URL" = "URL为空";
+"DLG_PLAYER_STRINGS_INVALID_URL" = "无效的URL";
 "DLG_PLAYER_STRINGS_CANNOT_OPEN_INPUT" = "无法打开输入源";
 "DLG_PLAYER_STRINGS_CANNOT_FIND_STREAM_INFO" = "无法获取流信息";
 "DLG_PLAYER_STRINGS_NO_VIDEO_AND_AUDIO_STREAM" = "无视频流和音频流";
