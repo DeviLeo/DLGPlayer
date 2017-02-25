@@ -28,9 +28,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     _tfUrl.delegate = self;
     _tfUrl.text = @"rtmp://192.168.31.120/demo/devileo";
-//    _tfUrl.text = @"http://192.168.31.120/media/pets.mp4";
-//    _tfUrl.text = @"http://192.168.31.120/media/portal2_cara_mia_addio.mp3";
-//    _tfUrl.text = @"http://192.168.31.120/media/portal2_want_you_gone.mp3";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -65,6 +62,7 @@
 - (void)go {
     _vcDLGPlayer.url = _tfUrl.text;
     [_vcDLGPlayer close];
+    [_vcDLGPlayer open];
 }
 
 - (void)initDLGPlayer {

@@ -108,6 +108,7 @@
         NSError *error = nil;
         if (![_decoder open:url error:&error]) {
             NSLog(@"open: %@, error: %@", url, error);
+            [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationOpened object:self];
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^{

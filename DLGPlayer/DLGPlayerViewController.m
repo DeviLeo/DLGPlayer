@@ -9,6 +9,14 @@
 #import "DLGPlayerViewController.h"
 #import "DLGPlayerUtils.h"
 
+typedef enum : NSUInteger {
+    DLGPlayerOperationNone,
+    DLGPlayerOperationOpen,
+    DLGPlayerOperationPlay,
+    DLGPlayerOperationPause,
+    DLGPlayerOperationClose,
+} DLGPlayerOperation;
+
 @interface DLGPlayerViewController () {
     BOOL restorePlay;
     BOOL animatingHUD;
@@ -29,6 +37,9 @@
 @property (nonatomic) dispatch_source_t timer;
 @property (nonatomic) BOOL updateHUD;
 @property (nonatomic) NSTimer *timerForHUD;
+
+@property (nonatomic, readwrite) DLGPlayerStatus status;
+@property (nonatomic) DLGPlayerOperation nextOperation;
 
 @end
 
@@ -84,6 +95,8 @@
     [self initTopBar];
     [self initBottomBar];
     [self initGestures];
+    self.status = DLGPlayerStatusNone;
+    self.nextOperation = DLGPlayerOperationNone;
 }
 
 - (void)onPlayButtonTapped:(id)sender {
@@ -116,7 +129,11 @@
 }
 
 - (void)syncHUD:(BOOL)force {
-    if (!force && (!_player.playing || !_updateHUD || _vTopBar.hidden)) return;
+    if (!force) {
+        if (_vTopBar.hidden) return;
+        if (!_player.playing) return;
+        if (!_updateHUD) return;
+    }
     
     // position
     double position = _player.position;
@@ -126,27 +143,85 @@
 }
 
 - (void)open {
+    if (self.status == DLGPlayerStatusClosing) {
+        self.nextOperation = DLGPlayerOperationOpen;
+        return;
+    }
+    if (self.status != DLGPlayerStatusNone &&
+        self.status != DLGPlayerStatusClosed) {
+        return;
+    }
+    self.status = DLGPlayerStatusOpening;
     _aivBuffering.hidden = NO;
     [_aivBuffering startAnimating];
     [self.player open:_url];
 }
 
 - (void)close {
+    if (self.status == DLGPlayerStatusOpening) {
+        self.nextOperation = DLGPlayerOperationClose;
+        return;
+    }
+    self.status = DLGPlayerStatusClosing;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self.player close];
     [_btnPlay setTitle:@"|>" forState:UIControlStateNormal];
 }
 
 - (void)play {
+    if (self.status == DLGPlayerStatusNone ||
+        self.status == DLGPlayerStatusClosed) {
+        [self open];
+        self.nextOperation = DLGPlayerOperationPlay;
+    }
+    if (self.status != DLGPlayerStatusOpened &&
+        self.status != DLGPlayerStatusPaused &&
+        self.status != DLGPlayerStatusEOF) {
+        return;
+    }
+    self.status = DLGPlayerStatusPlaying;
     [UIApplication sharedApplication].idleTimerDisabled = _preventFromScreenLock;
     [self.player play];
     [_btnPlay setTitle:@"||" forState:UIControlStateNormal];
 }
 
+- (void)replay {
+    self.player.position = 0;
+    [self play];
+}
+
 - (void)pause {
+    if (self.status != DLGPlayerStatusOpened &&
+        self.status != DLGPlayerStatusPlaying &&
+        self.status != DLGPlayerStatusEOF) {
+        return;
+    }
+    self.status = DLGPlayerStatusPaused;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self.player pause];
     [_btnPlay setTitle:@"|>" forState:UIControlStateNormal];
+}
+
+- (BOOL)doNextOperation {
+    if (_nextOperation == DLGPlayerOperationNone) return NO;
+    switch (_nextOperation) {
+        case DLGPlayerOperationOpen:
+            [self open];
+            break;
+        case DLGPlayerOperationPlay:
+            [self play];
+            break;
+        case DLGPlayerOperationPause:
+            [self pause];
+            break;
+        case DLGPlayerOperationClose:
+            [self close];
+            break;
+        default:
+            break;
+    }
+    self.nextOperation = DLGPlayerOperationNone;
+    return YES;
 }
 
 #pragma mark - Notifications
@@ -165,22 +240,27 @@
 }
 
 - (void)notifyPlayerEOF:(NSNotification *)notif {
-    [self close];
+    self.status = DLGPlayerStatusEOF;
+    if (_repeat) [self replay];
+    else [self close];
 }
 
 - (void)notifyPlayerClosed:(NSNotification *)notif {
-    if (_timer != nil) {
-        dispatch_cancel(_timer);
-        _timer = nil;
-    }
-    
-    if (_repeat) {
-        [self open];
-    }
+    self.status = DLGPlayerStatusClosed;
+    [_aivBuffering stopAnimating];
+    [self destroyTimer];
+    [self doNextOperation];
 }
 
 - (void)notifyPlayerOpened:(NSNotification *)notif {
-    if (!_player.opened) return;
+    [_aivBuffering stopAnimating];
+    if (!_player.opened) {
+        self.status = DLGPlayerStatusNone;
+        [self doNextOperation];
+        return;
+    }
+    
+    self.status = DLGPlayerStatusOpened;
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *title = nil;
         if (_player.metadata != nil) {
@@ -202,16 +282,19 @@
         [self createTimer];
         [self showHUD];
     });
-    [_aivBuffering stopAnimating];
-    if (_autoplay) [self play];
+    if (![self doNextOperation]) {
+        if (_autoplay) [self play];
+    }
 }
 
 - (void)notifyPlayerBufferStateChanged:(NSNotification *)notif {
     NSDictionary *userInfo = notif.userInfo;
     BOOL state = [userInfo[DLGPlayerNotificationBufferStateKey] boolValue];
     if (state) {
+        self.status = DLGPlayerStatusBuffering;
         [_aivBuffering startAnimating];
     } else {
+        self.status = DLGPlayerStatusPlaying;
         [_aivBuffering stopAnimating];
     }
 }
@@ -456,6 +539,7 @@
 }
 
 - (void)createTimer {
+    if (_timer != nil) return;
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
@@ -463,6 +547,12 @@
     });
     dispatch_resume(timer);
     self.timer = timer;
+}
+
+- (void)destroyTimer {
+    if (_timer == nil) return;
+    dispatch_cancel(_timer);
+    self.timer = nil;
 }
 
 @end

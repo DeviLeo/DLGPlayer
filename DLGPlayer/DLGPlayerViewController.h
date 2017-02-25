@@ -9,6 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "DLGPlayer.h"
 
+typedef enum : NSUInteger {
+    DLGPlayerStatusNone,
+    DLGPlayerStatusOpening,
+    DLGPlayerStatusOpened,
+    DLGPlayerStatusPlaying,
+    DLGPlayerStatusBuffering,
+    DLGPlayerStatusPaused,
+    DLGPlayerStatusEOF,
+    DLGPlayerStatusClosing,
+    DLGPlayerStatusClosed,
+} DLGPlayerStatus;
+
 @interface DLGPlayerViewController : UIViewController
 
 @property (nonatomic) NSString *url;
@@ -16,6 +28,7 @@
 @property (nonatomic) BOOL repeat;
 @property (nonatomic) BOOL preventFromScreenLock;
 @property (nonatomic) BOOL restorePlayAfterAppEnterForeground;
+@property (nonatomic, readonly) DLGPlayerStatus status;
 
 - (void)open;
 - (void)close;
