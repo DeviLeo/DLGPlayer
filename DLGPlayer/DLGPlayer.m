@@ -33,6 +33,7 @@
 @property (nonatomic) dispatch_queue_t frameReaderQueue;
 @property (nonatomic) BOOL notifiedBufferStart;
 @property (nonatomic) BOOL requestSeek;
+@property (nonatomic) BOOL opening;
 
 @end
 
@@ -63,6 +64,7 @@
     self.aframes = [NSMutableArray arrayWithCapacity:128];
     self.playingAudioFrame = nil;
     self.playingAudioFrameDataPosition = 0;
+    self.opening = NO;
     self.buffering = NO;
     self.playing = NO;
     self.opened = NO;
@@ -94,6 +96,7 @@
     [self.aframes removeAllObjects];
     self.playingAudioFrame = nil;
     self.playingAudioFrameDataPosition = 0;
+    self.opening = NO;
     self.buffering = NO;
     self.playing = NO;
     self.opened = NO;
@@ -106,8 +109,10 @@
 - (void)open:(NSString *)url {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
+        _opening = YES;
         if (![_decoder open:url error:&error]) {
             NSLog(@"open: %@, error: %@", url, error);
+            _opening = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationOpened object:self];
             return;
         }
@@ -119,6 +124,7 @@
             
             _duration = _decoder.duration;
             _metadata = _decoder.metadata;
+            _opening = NO;
             _buffering = NO;
             _playing = NO;
             _bufferedDuration = 0;
@@ -141,7 +147,7 @@
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC, 0.1 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
-        if (_buffering) return;
+        if (_opening || _buffering) return;
         [_decoder close];
         [_audio close];
         [self clearVars];
