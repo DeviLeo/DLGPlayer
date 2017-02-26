@@ -253,7 +253,9 @@ typedef enum : NSUInteger {
 }
 
 - (void)notifyPlayerOpened:(NSNotification *)notif {
-    [_aivBuffering stopAnimating];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_aivBuffering stopAnimating];
+    });
     if (!_player.opened) {
         self.status = DLGPlayerStatusNone;
         [self doNextOperation];
