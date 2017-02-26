@@ -27,7 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _tfUrl.delegate = self;
-    _tfUrl.text = @"rtmp://192.168.31.120/demo/devileo";
+    _tfUrl.text = _url;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -36,7 +36,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_vcDLGPlayer close];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -45,9 +44,19 @@
     [self go];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [_vcDLGPlayer close];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setUrl:(NSString *)url {
+    _url = url;
+    _tfUrl.text = url;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -60,6 +69,7 @@
 }
 
 - (void)go {
+    if (_tfUrl.text.length == 0) return;
     _vcDLGPlayer.url = _tfUrl.text;
     [_vcDLGPlayer close];
     [_vcDLGPlayer open];
@@ -86,6 +96,7 @@
     BOOL isLandscape = size.width > size.height;
     [coordinator animateAlongsideTransition:nil
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                                     self.navigationController.navigationBarHidden = isLandscape;
                                      [UIView animateWithDuration:0.2f
                                                       animations:^{
                                                           _vcDLGPlayer.view.frame = isLandscape ? self.view.frame : _vContainer.frame;

@@ -1,0 +1,136 @@
+html, body {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  width:1024px;
+  height: 100%;
+  margin: auto;
+}
+
+.area_uploading {
+	width:500px;
+	margin-right:10px;
+	float:left;
+}
+
+.area_uploaded {
+	width:500px;
+	margin-left:10px;
+	float:right;
+}
+
+.area_files_outer {
+	height:400px;
+	border-color:black;
+	border-style:solid;
+	border-width:1px;
+}
+.area_files_inner {
+	width:100%;
+	height:379px;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+.table_header {
+	table-layout:fixed;
+	border-collapse:collapse;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+}
+
+.uploading_table_header_col_0 {
+	width:20px;
+	overflow:hidden;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+.uploading_table_header_col_1 {
+	width:280px;
+	overflow:hidden;
+	text-align:center;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+.uploading_table_header_col_2 {
+	width:100px;
+	overflow:hidden;
+	text-align:center;
+}
+.uploading_table_header_col_3 {
+	width:100px;
+	overflow:hidden;
+	text-align:center;
+	border-left-style:solid;
+	border-left-width:1px;
+}
+
+.table_content {
+	table-layout:fixed;
+	border-collapse:collapse;
+}
+
+.uploading_tr_0 {
+	max-width:20px;
+	min-width:20px;
+	width:20px;
+}
+.uploading_tr_1 {
+	max-width:270px;
+	min-width:270px;
+	width:270px;
+	word-wrap:break-word;
+}
+.uploading_tr_2 {
+	max-width:100px;
+	min-width:100px;
+	width:100px;
+	text-align:center;
+	word-wrap:break-word;
+}
+.uploading_tr_3 {
+	max-width:100px;
+	min-width:100px;
+	width:100px;
+	text-align:center;
+	word-wrap:break-word;
+}
+
+.uploaded_table_header_col_0 {
+	width:20px;
+	overflow:hidden;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+.uploaded_table_header_col_1 {
+	width:380px;
+	overflow:hidden;
+	text-align:center;
+	border-right-style:solid;
+	border-right-width:1px;
+}
+.uploaded_table_header_col_2 {
+	width:100px;
+	overflow:hidden;
+	text-align:center;
+}
+
+.uploaded_tr_0 {
+	max-width:20px;
+	min-width:20px;
+	width:20px;
+}
+.uploaded_tr_1 {
+	max-width:370px;
+	min-width:370px;
+	width:370px;
+	word-wrap:break-word;
+}
+.uploaded_tr_2 {
+	max-width:100px;
+	min-width:100px;
+	width:100px;
+	text-align:center;
+	word-wrap:break-word;
+}
