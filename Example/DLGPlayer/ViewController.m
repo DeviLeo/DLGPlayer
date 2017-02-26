@@ -28,6 +28,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     _tfUrl.delegate = self;
     _tfUrl.text = _url;
+    [self updateTitle];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -36,6 +37,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [_vcDLGPlayer close];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -44,19 +46,17 @@
     [self go];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [_vcDLGPlayer close];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setUrl:(NSString *)url {
-    _url = url;
-    _tfUrl.text = url;
+- (void)updateTitle {
+    if (_tfUrl.text.length == 0) {
+        self.navigationItem.title = @"DLGPlayer";
+    } else {
+        self.navigationItem.title = [_tfUrl.text lastPathComponent];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -70,6 +70,7 @@
 
 - (void)go {
     if (_tfUrl.text.length == 0) return;
+    [self updateTitle];
     _vcDLGPlayer.url = _tfUrl.text;
     [_vcDLGPlayer close];
     [_vcDLGPlayer open];
