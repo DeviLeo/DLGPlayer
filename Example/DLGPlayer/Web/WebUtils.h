@@ -10,7 +10,7 @@
 
 @interface WebUtils : NSObject
 
-+ (NSString *)getIpAddress;
-+ (NSString *)getIpAddressByName:(NSString *)ifa_name;
++ (BOOL)getIpAddress:(NSString **)ipv4 ipv6:(NSString **)ipv6;
++ (BOOL)getIpAddressByName:(NSString *)ifa_name ipv4:(NSString **)ipv4 ipv6:(NSString **)ipv6;
 
 @end

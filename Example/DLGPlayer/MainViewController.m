@@ -130,20 +130,19 @@
 
 #pragma mark - History
 - (void)addHistoryUrl:(NSString *)url {
-    NSString *finalUrl = [self checkUrl:url];
     NSTimeInterval dt = [NSDate timeIntervalSinceReferenceDate];
     
     NSInteger count = _history.count;
     for (NSInteger i = 0; i < count; ++i) {
         NSMutableDictionary *obj = _history[i];
-        if ([obj[@"url"] isEqualToString:finalUrl]) {
+        if ([obj[@"url"] isEqualToString:url]) {
             [_history removeObjectAtIndex:i];
             break;
         }
     }
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    dict[@"url"] = finalUrl;
+    dict[@"url"] = url;
     dict[@"dt"] = @(dt);
     [_history insertObject:dict atIndex:0];
     [self saveHistory];
@@ -183,8 +182,8 @@
         [textField resignFirstResponder];
         NSString *url = textField.text;
         if (url.length > 0) {
+            [self addHistoryUrl:url];
             _urlForSegue = [self checkUrl:url];
-            [self addHistoryUrl:_urlForSegue];
             [self performSegueWithIdentifier:@"m2v" sender:self];
         }
     }
@@ -287,8 +286,9 @@
         NSInteger row = indexPath.row;
         if (row < _history.count) {
             NSDictionary *dict = _history[row];
-            _urlForSegue = [self checkUrl:dict[@"url"]];
-            [self addHistoryUrl:_urlForSegue];
+            NSString *url = dict[@"url"];
+            [self addHistoryUrl:url];
+            _urlForSegue = [self checkUrl:url];
             [self performSegueWithIdentifier:@"m2v" sender:self];
         }
     }

@@ -108,9 +108,12 @@
     [_server setConnectionClass:[HTTPUploader class]];
     
     // Start the server (and check for problems)
-    NSString *ipAddress = [WebUtils getIpAddress];
-    BOOL success = NO;
-    if (ipAddress != nil) {
+    NSString *ipv4 = nil;
+    NSString *ipv6 = nil;
+    BOOL success = [WebUtils getIpAddress:&ipv4 ipv6:&ipv6];
+    if (success) {
+        NSString *ipAddress = ipv4;
+        if (ipAddress == nil) ipAddress = [NSString stringWithFormat:@"[%@]", ipv6];
         NSError *error;
         if([_server start:&error]) {
             _lblUrl.text = [NSString stringWithFormat:@"http://%@", ipAddress];
@@ -228,7 +231,7 @@
         NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSString *fullPath = [filePath stringByAppendingPathComponent:filename];
         _urlForSegue = [NSString stringWithFormat:@"file://%@", fullPath];
-        [[NSNotificationCenter defaultCenter] postNotificationName:FMVNotificationAddUrlToHistory object:nil userInfo:@{@"url":_urlForSegue}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:FMVNotificationAddUrlToHistory object:nil userInfo:@{@"url":filename}];
         [self performSegueWithIdentifier:@"fm2v" sender:self];
     }
 }
