@@ -74,6 +74,8 @@ See ***DLGPlayerViewController*** class for more usage details.
 * [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script")
 * [libav/gas-preprocessor](https://github.com/libav/gas-preprocessor "https://github.com/libav/gas-preprocessor")
 * [Yasm](http://yasm.tortall.net "http://yasm.tortall.net")
+* [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket "https://github.com/robbiehanson/CocoaAsyncSocket")
+* [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer "https://github.com/robbiehanson/CocoaHTTPServer")
 
 Thank you all!
 
