@@ -19,15 +19,17 @@ Follow the steps in the [README.md](https://github.com/kewlbear/FFmpeg-iOS-build
 #### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 Put built "ffmpeg/include" and "ffmpeg/lib" folders into example project's "DLGPlayer/Externals/ffmpeg" folder.  
 
-## 2. Prepare media
+## 2. Run demo
+Build project and run demo on your device or simulator.  
+
+## 3. Play media
 #### (1) Put any media files such as mp4 or mp3 into your server's folder.  
 Make sure those media files can be access by url (such as http://192.168.31.120/media.mp4) from browser.  
+Then input "http://192.168.31.120/media.mp4" into the text box on the top of the main view and go!
 
-#### (2) Modify code
-Open **DLGPlayer/ViewController.m** and change the **\_tfUrl.text** value to your media file's url.
-
-## 3. Run demo
-Build project and run demo on your device or simulator.  
+#### (2) Transfer any media files using file management.
+Select "Local Files" in the main view and transfer the media files according to the tips on the top of the file management view.
+Then select any one media file listed in the table and enjoy it!
 
 ## 4. Usage
 #### (1) Use *DLGPlayerViewController* to play a media file with HUD.
