@@ -37,7 +37,7 @@
 		E825C4EF1E629870006E1877 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4B51E629870006E1877 /* DDNumber.m */; };
 		E825C4F01E629870006E1877 /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4B71E629870006E1877 /* DDRange.m */; };
 		E825C4F11E629870006E1877 /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4B91E629870006E1877 /* HTTPAuthenticationRequest.m */; };
-		E825C4F21E629870006E1877 /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4BB1E629870006E1877 /* HTTPConnection.m */; };
+		E825C4F21E629870006E1877 /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4BB1E629870006E1877 /* HTTPConnection.m */; settings = {COMPILER_FLAGS = "-Wno-unreachable-code"; }; };
 		E825C4F31E629870006E1877 /* HTTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4BE1E629870006E1877 /* HTTPMessage.m */; };
 		E825C4F41E629870006E1877 /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4C11E629870006E1877 /* HTTPServer.m */; };
 		E825C4F51E629870006E1877 /* MultipartFormDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4C41E629870006E1877 /* MultipartFormDataParser.m */; };
@@ -49,7 +49,7 @@
 		E825C4FB1E629870006E1877 /* HTTPErrorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4D11E629870006E1877 /* HTTPErrorResponse.m */; };
 		E825C4FC1E629870006E1877 /* HTTPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4D31E629870006E1877 /* HTTPFileResponse.m */; };
 		E825C4FD1E629870006E1877 /* HTTPRedirectResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4D51E629870006E1877 /* HTTPRedirectResponse.m */; };
-		E825C4FE1E629870006E1877 /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4D71E629870006E1877 /* WebSocket.m */; };
+		E825C4FE1E629870006E1877 /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4D71E629870006E1877 /* WebSocket.m */; settings = {COMPILER_FLAGS = "-Wno-unused-function -Wno-unreachable-code"; }; };
 		E825C4FF1E629870006E1877 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4DA1E629870006E1877 /* DDAbstractDatabaseLogger.m */; };
 		E825C5001E629870006E1877 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4DC1E629870006E1877 /* DDASLLogger.m */; };
 		E825C5011E629870006E1877 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E825C4DE1E629870006E1877 /* DDFileLogger.m */; };
