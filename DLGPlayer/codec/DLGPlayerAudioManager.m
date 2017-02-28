@@ -253,8 +253,6 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
         _playing = (status == noErr);
         if (!_playing) {
             NSLog(@"Cannot start to play audio");
-        } else {
-            [self registerNotifications];
         }
     }
 }
