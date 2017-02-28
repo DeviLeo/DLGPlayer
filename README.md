@@ -1,7 +1,7 @@
 # DLGPlayer
 A media player for iOS based on FFmpeg 3.2.2.  
 DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written and **NO deprecated** functions and methods are used.  
-If you found deprecated function or method, please submit an issue to me.  
+If you found any deprecated function or method, please submit an issue to me.  
 Great thanks for Konstantin Boukreev's kxmovie.  
 
 ## 0. Screenshots
