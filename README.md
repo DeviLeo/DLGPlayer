@@ -1,6 +1,7 @@
 # DLGPlayer
 A media player for iOS based on FFmpeg 3.2.2.  
-DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written.  
+DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written and **NO deprecated** functions and methods are used.  
+If you found deprecated function or method, please submit an issue to me.  
 Great thanks for Konstantin Boukreev's kxmovie.  
 
 ## 0. Screenshots
@@ -28,8 +29,9 @@ Make sure those media files can be access by url (such as http://192.168.31.120/
 Then input "http://192.168.31.120/media.mp4" into the text box on the top of the main view and go!
 
 #### (2) Transfer any media files using file management.
-Select "Local Files" in the main view and transfer the media files according to the tips on the top of the file management view.
-Then select any one media file listed in the table and enjoy it!
+Select "Local Files" in the main view.  
+Transfer the media files according to the tips on the top of the file management view.  
+Select any one media file listed in the table and enjoy it!  
 
 ## 4. Usage
 #### (1) Use *DLGPlayerViewController* to play a media file with HUD.
