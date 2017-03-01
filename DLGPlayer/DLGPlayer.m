@@ -35,6 +35,9 @@
 @property (nonatomic) BOOL requestSeek;
 @property (nonatomic) BOOL opening;
 
+@property (nonatomic) dispatch_semaphore_t vFramesLock;
+@property (nonatomic) dispatch_semaphore_t aFramesLock;
+
 @end
 
 @implementation DLGPlayer
@@ -45,6 +48,10 @@
         [self initAll];
     }
     return self;
+}
+
+- (void)dealloc {
+    NSLog(@"DLGPlayer dealloc");
 }
 
 - (void)initAll {
@@ -70,6 +77,8 @@
     self.opened = NO;
     self.requestSeek = NO;
     self.frameReaderQueue = dispatch_queue_create("FrameReader", DISPATCH_QUEUE_SERIAL);
+    self.aFramesLock = dispatch_semaphore_create(1);
+    self.vFramesLock = dispatch_semaphore_create(1);
 }
 
 - (void)initView {
@@ -180,20 +189,28 @@
                 if (!_buffering) _buffering = YES;
                 NSArray *fs = [_decoder readFrames];
                 if (fs == nil) { break; }
-                @synchronized (_vframes) {
-                    for (DLGPlayerFrame *f in fs) {
-                        if (f.type == kDLGPlayerFrameTypeVideo) {
-                            [_vframes addObject:f];
-                            _bufferedDuration += f.duration;
+                {
+                    long timeout = dispatch_semaphore_wait(_vFramesLock, DISPATCH_TIME_NOW);
+                    if (timeout == 0) {
+                        for (DLGPlayerFrame *f in fs) {
+                            if (f.type == kDLGPlayerFrameTypeVideo) {
+                                [_vframes addObject:f];
+                                _bufferedDuration += f.duration;
+                            }
                         }
+                        dispatch_semaphore_signal(_vFramesLock);
                     }
                 }
-                @synchronized (_aframes) {
-                    for (DLGPlayerFrame *f in fs) {
-                        if (f.type == kDLGPlayerFrameTypeAudio) {
-                            [_aframes addObject:f];
-                            if (!_decoder.hasVideo) _bufferedDuration += f.duration;
+                {
+                    long timeout = dispatch_semaphore_wait(_aFramesLock, DISPATCH_TIME_NOW);
+                    if (timeout == 0) {
+                        for (DLGPlayerFrame *f in fs) {
+                            if (f.type == kDLGPlayerFrameTypeAudio) {
+                                [_aframes addObject:f];
+                                if (!_decoder.hasVideo) _bufferedDuration += f.duration;
+                            }
                         }
+                        dispatch_semaphore_signal(_aFramesLock);
                     }
                 }
             }
@@ -248,11 +265,15 @@
     
     // Render video
     DLGPlayerVideoFrame *frame = nil;
-    @synchronized (_vframes) {
-        frame = _vframes[0];
-        _mediaPosition = frame.position;
-        _bufferedDuration -= frame.duration;
-        [_vframes removeObjectAtIndex:0];
+    {
+        long timeout = dispatch_semaphore_wait(_vFramesLock, DISPATCH_TIME_NOW);
+        if (timeout == 0) {
+            frame = _vframes[0];
+            _mediaPosition = frame.position;
+            _bufferedDuration -= frame.duration;
+            [_vframes removeObjectAtIndex:0];
+            dispatch_semaphore_signal(_vFramesLock);
+        }
     }
     [_view render:frame];
     
@@ -293,33 +314,39 @@
     while(frames > 0) {
         @autoreleasepool {
             if (_playingAudioFrame == nil) {
-                @synchronized (_aframes) {
+                {
                     if (_aframes.count <= 0) {
                         memset(data, 0, frames * channels * sizeof(float));
                         return;
                     }
                     
-                    DLGPlayerAudioFrame *frame = _aframes[0];
-                    if (_decoder.hasVideo) {
-                        const double dt = _mediaPosition - frame.position;
-                        if (dt < -0.1) { // audio is faster than video, silence
-                            memset(data, 0, frames * channels * sizeof(float));
-                            break;
-                        } else if (dt > 0.1) { // audio is slower than video, skip
-                            [_aframes removeObjectAtIndex:0];
-                            continue;
+                    long timeout = dispatch_semaphore_wait(_aFramesLock, DISPATCH_TIME_NOW);
+                    if (timeout == 0) {
+                        DLGPlayerAudioFrame *frame = _aframes[0];
+                        if (_decoder.hasVideo) {
+                            const double dt = _mediaPosition - frame.position;
+                            if (dt < -0.1) { // audio is faster than video, silence
+                                memset(data, 0, frames * channels * sizeof(float));
+                                dispatch_semaphore_signal(_aFramesLock);
+                                break;
+                            } else if (dt > 0.1) { // audio is slower than video, skip
+                                [_aframes removeObjectAtIndex:0];
+                                dispatch_semaphore_signal(_aFramesLock);
+                                continue;
+                            } else {
+                                self.playingAudioFrameDataPosition = 0;
+                                self.playingAudioFrame = frame;
+                                [_aframes removeObjectAtIndex:0];
+                            }
                         } else {
                             self.playingAudioFrameDataPosition = 0;
                             self.playingAudioFrame = frame;
                             [_aframes removeObjectAtIndex:0];
+                            _mediaPosition = frame.position;
+                            _bufferedDuration -= frame.duration;
                         }
-                    } else {
-                        self.playingAudioFrameDataPosition = 0;
-                        self.playingAudioFrame = frame;
-                        [_aframes removeObjectAtIndex:0];
-                        _mediaPosition = frame.position;
-                        _bufferedDuration -= frame.duration;
-                    }
+                        dispatch_semaphore_signal(_aFramesLock);
+                    } else return;
                 }
             }
             
@@ -357,11 +384,15 @@
     _requestSeek = YES;
     dispatch_async(_frameReaderQueue, ^{
         [_decoder seek:position];
-        @synchronized (_vframes) {
+        {
+            dispatch_semaphore_wait(_vFramesLock, DISPATCH_TIME_FOREVER);
             [_vframes removeAllObjects];
+            dispatch_semaphore_signal(_vFramesLock);
         }
-        @synchronized (_aframes) {
+        {
+            dispatch_semaphore_wait(_aFramesLock, DISPATCH_TIME_FOREVER);
             [_aframes removeAllObjects];
+            dispatch_semaphore_signal(_aFramesLock);
         }
         _bufferedDuration = 0;
         _requestSeek = NO;
