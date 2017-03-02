@@ -237,6 +237,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FileCell" forIndexPath:indexPath];
     
+    cell.textLabel.numberOfLines = 0;
     if (indexPath.section == 0) {
         NSDictionary *dict = _menu[indexPath.row];
         cell.textLabel.text = dict[@"title"];
@@ -257,19 +258,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) return 44;
-    
-    CGSize size = CGSizeMake(270, MAXFLOAT);
-    UIFont *font = [UIFont systemFontOfSize:16];
-    NSMutableDictionary *dict = _history[indexPath.row];
-    NSString *text = [self cellTextUrl:dict[@"url"]];
-    CGRect rect = [text boundingRectWithSize:size
-                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                  attributes:@{NSFontAttributeName:font}
-                                     context:nil];
-    CGFloat height = ceil(rect.size.height) + 8;
-    if (height < 44) return 44;
-    
-    return height;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

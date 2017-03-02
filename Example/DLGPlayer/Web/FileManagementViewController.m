@@ -202,24 +202,15 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FileCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    cell.textLabel.numberOfLines = 0;
     cell.textLabel.text = [_files objectAtIndex:indexPath.row];
     
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize size = CGSizeMake(270, MAXFLOAT);
-    UIFont *font = [UIFont systemFontOfSize:16];
-    NSString *text = [_files objectAtIndex:indexPath.row];
-    CGRect rect = [text boundingRectWithSize:size
-                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                  attributes:@{NSFontAttributeName:font}
-                                     context:nil];
-    CGFloat height = ceil(rect.size.height) + 8;
-    if (height < 44) return 44;
-    return height;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
