@@ -206,12 +206,11 @@
     NSString *finalurl = url;
     NSRange range = [url rangeOfString:@":"];
     if (range.location == NSNotFound) { // file
-        if ([url characterAtIndex:0] == '/') { // absolute
-            finalurl = [NSString stringWithFormat:@"file://%@", url];
-        } else { // relative
+        if ([url characterAtIndex:0] != '/') { // relative
             NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-            finalurl = [doc stringByAppendingPathComponent:url];
-        }
+            url = [doc stringByAppendingPathComponent:url];
+        } // else absolute 
+        finalurl = [NSString stringWithFormat:@"file://%@", url];
     } // else network url or file://
     return finalurl;
 }
