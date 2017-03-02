@@ -114,10 +114,6 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="NcF-Zh-Dcg" id="T9x-WU-u5Y"/>
-                                    <outlet property="delegate" destination="NcF-Zh-Dcg" id="ju0-iG-HkE"/>
-                                </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ap7-FO-Z3X">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
@@ -252,6 +248,6 @@ please type the following url into the browser.</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="X3R-FO-OcR"/>
+        <segue reference="8PQ-1f-1vL"/>
     </inferredMetricsTieBreakers>
 </document>
