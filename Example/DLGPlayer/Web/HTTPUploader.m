@@ -99,7 +99,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_OFF;
     
     if ([method isEqualToString:@"GET"]) {
         if ([path hasPrefix:@"/check?filename="]) {
-            NSString *filename = [[path substringFromIndex:[path rangeOfString:@"="].location+1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *filename = [[path substringFromIndex:[path rangeOfString:@"="].location+1] stringByRemovingPercentEncoding];
             NSFileManager *fm = [NSFileManager defaultManager];
             NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
             NSString *filePath = [docPath stringByAppendingPathComponent:filename];
@@ -127,7 +127,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_OFF;
             HTTPDataResponse *resp = [[HTTPDataResponse alloc] initWithData:data];
             return resp;
         } else if ([path hasPrefix:@"/delete?file="]) {
-            NSString *filename = [[path substringFromIndex:[path rangeOfString:@"="].location+1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *filename = [[path substringFromIndex:[path rangeOfString:@"="].location+1] stringByRemovingPercentEncoding];
             NSFileManager *fm = [NSFileManager defaultManager];
             NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
             NSString *filePath = [docPath stringByAppendingPathComponent:filename];
@@ -195,7 +195,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_OFF;
     }
     
     // download
-    NSString *filename = [[path lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *filename = [[path lastPathComponent] stringByRemovingPercentEncoding];
     NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *filePath = [docPath stringByAppendingPathComponent:filename];
     NSFileManager *fm = [NSFileManager defaultManager];
