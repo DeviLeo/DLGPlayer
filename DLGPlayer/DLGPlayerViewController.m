@@ -34,6 +34,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, weak) UILabel *lblDuration;
 @property (nonatomic, weak) UISlider *sldPosition;
 
+@property (nonatomic) UITapGestureRecognizer *grTap;
+
 @property (nonatomic) dispatch_source_t timer;
 @property (nonatomic) BOOL updateHUD;
 @property (nonatomic) NSTimer *timerForHUD;
@@ -109,6 +111,7 @@ typedef enum : NSUInteger {
 
 - (void)onSliderStartSlide:(id)sender {
     self.updateHUD = NO;
+    self.grTap.enabled = NO;
 }
 
 - (void)onSliderValueChanged:(id)sender {
@@ -122,6 +125,7 @@ typedef enum : NSUInteger {
     float position = slider.value;
     _player.position = position;
     self.updateHUD = YES;
+    self.grTap.enabled = YES;
 }
 
 - (void)syncHUD {
@@ -473,6 +477,7 @@ typedef enum : NSUInteger {
     tap.numberOfTapsRequired = 1;
     tap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:tap];
+    self.grTap = tap;
 }
 
 #pragma mark - Show/Hide HUD
@@ -536,8 +541,10 @@ typedef enum : NSUInteger {
 
 #pragma mark - Gesture
 - (void)onTapGesutreRecognizer:(UITapGestureRecognizer *)recognizer {
-    if (_vTopBar.hidden) [self showHUD];
-    else [self hideHUD];
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        if (_vTopBar.hidden) [self showHUD];
+        else [self hideHUD];
+    }
 }
 
 - (void)createTimer {
