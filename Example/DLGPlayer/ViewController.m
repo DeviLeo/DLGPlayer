@@ -18,6 +18,8 @@
 @property (nonatomic, weak) IBOutlet UIView *vContainer;
 @property (nonatomic, weak) IBOutlet UITextField *tfUrl;
 @property (nonatomic) DLGPlayerViewController *vcDLGPlayer;
+@property (nonatomic) BOOL fullscreen;
+@property (nonatomic) BOOL landscape;
 
 @end
 
@@ -97,17 +99,43 @@
     BOOL isLandscape = size.width > size.height;
     [coordinator animateAlongsideTransition:nil
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                                     self.navigationController.navigationBarHidden = isLandscape;
-                                     [UIView animateWithDuration:0.2f
-                                                      animations:^{
-                                                          _vcDLGPlayer.view.frame = isLandscape ? self.view.frame : _vContainer.frame;
-                                                      }];
+                                     self.landscape = isLandscape;
                                  }];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     if ([_tfUrl canResignFirstResponder]) [_tfUrl resignFirstResponder];
+    
+    UITouch *touch = [touches anyObject];
+    if (touch.tapCount == 2) {
+        self.fullscreen = !self.fullscreen;
+    }
+}
+
+- (void)setFullscreen:(BOOL)fullscreen {
+    _fullscreen = fullscreen;
+    [self updatePlayerFrame];
+}
+
+- (void)setLandscape:(BOOL)landscape {
+    _landscape = landscape;
+    [self updatePlayerFrame];
+}
+
+- (void)updatePlayerFrame {
+    BOOL fullscreen = _landscape || _fullscreen;
+    [self.navigationController setNavigationBarHidden:fullscreen animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:fullscreen withAnimation:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
+    [UIView animateWithDuration:0.2f
+                     animations:^{
+                         _vcDLGPlayer.view.frame = fullscreen ? self.view.frame : _vContainer.frame;
+                     }];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return (_landscape || _fullscreen);
 }
 
 @end
