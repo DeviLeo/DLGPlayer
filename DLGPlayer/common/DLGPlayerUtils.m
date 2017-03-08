@@ -13,9 +13,21 @@
 
 + (void)createError:(NSError **)error withDomain:(NSString *)domain andCode:(NSInteger)code andMessage:(NSString *)message {
     if (error == nil) return;
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (message != nil) userInfo[NSLocalizedDescriptionKey] = message;
     *error = [NSError errorWithDomain:domain
                                  code:code
-                             userInfo:@{NSLocalizedDescriptionKey : message}];
+                             userInfo:userInfo];
+}
+
++ (void)createError:(NSError **)error withDomain:(NSString *)domain andCode:(NSInteger)code andMessage:(NSString *)message andRawError:(NSError *)rawError {
+    if (error == nil) return;
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (message != nil) userInfo[NSLocalizedDescriptionKey] = message;
+    if (rawError != nil) userInfo[NSLocalizedFailureReasonErrorKey] = rawError;
+    *error = [NSError errorWithDomain:domain
+                                 code:code
+                             userInfo:userInfo];
 }
 
 + (NSString *)localizedString:(NSString *)name {

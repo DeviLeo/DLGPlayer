@@ -40,17 +40,50 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [_vcDLGPlayer close];
+    [self unregisterNotification];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self initDLGPlayer];
+    [self registerNotification];
     [self go];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)registerNotification {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(notifyPlayerError:) name:DLGPlayerNotificationError object:_vcDLGPlayer];
+}
+
+- (void)unregisterNotification {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
+}
+
+- (void)notifyPlayerError:(NSNotification *)notif {
+    NSDictionary *userInfo = notif.userInfo;
+    NSError *error = userInfo[DLGPlayerNotificationErrorKey];
+    BOOL isAudioError = [error.domain isEqualToString:DLGPlayerErrorDomainAudioManager];
+    NSString *title = isAudioError ? @"Audio Error" : @"Error";
+    NSString *message = error.localizedDescription;
+    if (isAudioError) message = [message stringByAppendingFormat:@"\n%@", error.localizedFailureReason];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 - (void)updateTitle {

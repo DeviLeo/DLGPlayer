@@ -52,7 +52,7 @@
 }
 
 - (BOOL)open:(NSString *)url error:(NSError **)error {
-    if (url == nil) {
+    if (url == nil || url.length == 0) {
         [DLGPlayerUtils createError:error
                          withDomain:DLGPlayerErrorDomainDecoder
                             andCode:DLGPlayerErrorCodeInvalidURL
@@ -80,7 +80,6 @@
 #endif
     
     // 3. Analyze Stream Info
-    // reduce the analyze time
     ret = avformat_find_stream_info(fmtctx, NULL);
     if (ret < 0) {
         avformat_close_input(&fmtctx);

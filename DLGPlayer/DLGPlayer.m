@@ -88,16 +88,10 @@
 
 - (void)initDecoder {
     self.decoder = [[DLGPlayerDecoder alloc] init];
-    _decoder.audioChannels = [_audio channels];
-    _decoder.audioSampleRate = [_audio sampleRate];
 }
 
 - (void)initAudio {
     self.audio = [[DLGPlayerAudioManager alloc] init];
-    NSError *error = nil;
-    if (![_audio open:&error]) {
-        NSLog(@"failed to open audio, error: %@", error);
-    }
 }
 
 - (void)clearVars {
@@ -119,10 +113,18 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSError *error = nil;
         _opening = YES;
-        if (![_decoder open:url error:&error]) {
-            NSLog(@"open: %@, error: %@", url, error);
+        
+        if (![_audio open:&error]) {
             _opening = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationOpened object:self];
+            [self handleError:error];
+            return;
+        }
+        _decoder.audioChannels = [_audio channels];
+        _decoder.audioSampleRate = [_audio sampleRate];
+        
+        if (![_decoder open:url error:&error]) {
+            _opening = NO;
+            [self handleError:error];
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -152,15 +154,25 @@
 }
 
 - (void)close {
+    if (!_opened) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationClosed object:self];
+        return;
+    }
     [self pause];
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC, 0.1 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
         if (_opening || _buffering) return;
         [_decoder close];
-        [_audio close];
-        [self clearVars];
-        [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationClosed object:self];
+        NSArray<NSError *> *errors = nil;
+        if ([_audio close:&errors]) {
+            [self clearVars];
+            [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationClosed object:self];
+        } else {
+            for (NSError *error in errors) {
+                [self handleError:error];
+            }
+        }
         dispatch_cancel(timer);
     });
     dispatch_resume(timer);
@@ -173,12 +185,18 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self render];
     });
-    [_audio play];
+    NSError *error = nil;
+    if (![_audio play:&error]) {
+        [self handleError:error];
+    }
 }
 
 - (void)pause {
     _playing = NO;
-    [_audio pause];
+    NSError *error = nil;
+    if (![_audio pause:&error]) {
+        [self handleError:error];
+    }
 }
 
 - (void)readFrame {
@@ -401,6 +419,13 @@
 
 - (double)position {
     return _mediaPosition;
+}
+
+#pragma mark - Handle Error
+- (void)handleError:(NSError *)error {
+    if (error == nil) return;
+    NSDictionary *userInfo = @{ DLGPlayerNotificationErrorKey : error };
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationError object:self userInfo:userInfo];
 }
 
 @end

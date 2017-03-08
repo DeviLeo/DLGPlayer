@@ -83,6 +83,7 @@ typedef enum : NSUInteger {
     [nc addObserver:self selector:@selector(notifyPlayerClosed:) name:DLGPlayerNotificationClosed object:_player];
     [nc addObserver:self selector:@selector(notifyPlayerEOF:) name:DLGPlayerNotificationEOF object:_player];
     [nc addObserver:self selector:@selector(notifyPlayerBufferStateChanged:) name:DLGPlayerNotificationBufferStateChanged object:_player];
+    [nc addObserver:self selector:@selector(notifyPlayerError:) name:DLGPlayerNotificationError object:_player];
 }
 
 - (void)unregisterNotification {
@@ -260,11 +261,6 @@ typedef enum : NSUInteger {
     dispatch_async(dispatch_get_main_queue(), ^{
         [_aivBuffering stopAnimating];
     });
-    if (!_player.opened) {
-        self.status = DLGPlayerStatusNone;
-        [self doNextOperation];
-        return;
-    }
     
     self.status = DLGPlayerStatusOpened;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -303,6 +299,22 @@ typedef enum : NSUInteger {
         self.status = DLGPlayerStatusPlaying;
         [_aivBuffering stopAnimating];
     }
+}
+
+- (void)notifyPlayerError:(NSNotification *)notif {
+    NSDictionary *userInfo = notif.userInfo;
+    NSError *error = userInfo[DLGPlayerNotificationErrorKey];
+    if ([error.domain isEqualToString:DLGPlayerErrorDomainDecoder]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_aivBuffering stopAnimating];
+            self.status = DLGPlayerStatusNone;
+            self.nextOperation = DLGPlayerOperationNone;
+        });
+        NSLog(@"Player decoder error: %@", error);
+    } else if ([error.domain isEqualToString:DLGPlayerErrorDomainAudioManager]) {
+        NSLog(@"Player audio error: %@", error);
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationError object:self userInfo:notif.userInfo];
 }
 
 #pragma mark - UI
