@@ -153,7 +153,7 @@
 }
 
 - (void)close {
-    if (!_opened) {
+    if (!_opened && !_opening) {
         [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationClosed object:self];
         return;
     }
