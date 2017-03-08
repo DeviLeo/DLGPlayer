@@ -114,13 +114,12 @@
         NSError *error = nil;
         _opening = YES;
         
-        if (![_audio open:&error]) {
-            _opening = NO;
+        if ([_audio open:&error]) {
+            _decoder.audioChannels = [_audio channels];
+            _decoder.audioSampleRate = [_audio sampleRate];
+        } else {
             [self handleError:error];
-            return;
         }
-        _decoder.audioChannels = [_audio channels];
-        _decoder.audioSampleRate = [_audio sampleRate];
         
         if (![_decoder open:url error:&error]) {
             _opening = NO;

@@ -313,6 +313,8 @@ typedef enum : NSUInteger {
         NSLog(@"Player decoder error: %@", error);
     } else if ([error.domain isEqualToString:DLGPlayerErrorDomainAudioManager]) {
         NSLog(@"Player audio error: %@", error);
+        // I am not sure what will cause the audio error,
+        // if it happens, please issue to me
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:DLGPlayerNotificationError object:self userInfo:notif.userInfo];
 }

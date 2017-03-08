@@ -72,7 +72,10 @@
     BOOL isAudioError = [error.domain isEqualToString:DLGPlayerErrorDomainAudioManager];
     NSString *title = isAudioError ? @"Audio Error" : @"Error";
     NSString *message = error.localizedDescription;
-    if (isAudioError) message = [message stringByAppendingFormat:@"\n%@", error.localizedFailureReason];
+    if (isAudioError) {
+        NSError *rawError = error.userInfo[NSLocalizedFailureReasonErrorKey];
+        message = [message stringByAppendingFormat:@"\n%@", rawError];
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:title

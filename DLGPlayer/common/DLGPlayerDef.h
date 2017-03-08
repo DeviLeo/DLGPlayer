@@ -17,26 +17,26 @@
 #define DLGPlayerErrorDomainDecoder         @"DLGPlayerDecoder"
 #define DLGPlayerErrorDomainAudioManager    @"DLGPlayerAudioManager"
 
-#define DLGPlayerErrorCodeInvalidURL            -1
-#define DLGPlayerErrorCodeCannotOpenInput       -2
-#define DLGPlayerErrorCodeCannotFindStreamInfo  -3
-#define DLGPlayerErrorCodeNoVideoAndAudioStream -4
+#define DLGPlayerErrorCodeInvalidURL                        -1
+#define DLGPlayerErrorCodeCannotOpenInput                   -2
+#define DLGPlayerErrorCodeCannotFindStreamInfo              -3
+#define DLGPlayerErrorCodeNoVideoAndAudioStream             -4
 
-#define DLGPlayerErrorCodeNoAudioOuput          -5
-#define DLGPlayerErrorCodeNoAudioChannel        -6
-#define DLGPlayerErrorCodeNoAudioSampleRate     -7
-#define DLGPlayerErrorCodeNoAudioVolume         -8
-#define DLGPlayerErrorCodeCannotSetAudioCategory    -9
-#define DLGPlayerErrorCodeCannotSetAudioActive      -10
-#define DLGPlayerErrorCodeCannotInitAudioUnit       -11
+#define DLGPlayerErrorCodeNoAudioOuput                      -5
+#define DLGPlayerErrorCodeNoAudioChannel                    -6
+#define DLGPlayerErrorCodeNoAudioSampleRate                 -7
+#define DLGPlayerErrorCodeNoAudioVolume                     -8
+#define DLGPlayerErrorCodeCannotSetAudioCategory            -9
+#define DLGPlayerErrorCodeCannotSetAudioActive              -10
+#define DLGPlayerErrorCodeCannotInitAudioUnit               -11
 #define DLGPlayerErrorCodeCannotCreateAudioComponent        -12
 #define DLGPlayerErrorCodeCannotGetAudioStreamDescription   -13
 #define DLGPlayerErrorCodeCannotSetAudioRenderCallback      -14
-#define DLGPlayerErrorCodeCannotUninitAudioUnit     -15
-#define DLGPlayerErrorCodeCannotDisposeAudioUnit    -16
-#define DLGPlayerErrorCodeCannotDeactivateAudio     -17
-#define DLGPlayerErrorCodeCannotStartAudioUnit      -18
-#define DLGPlayerErrorCodeCannotStopAudioUnit       -19
+#define DLGPlayerErrorCodeCannotUninitAudioUnit             -15
+#define DLGPlayerErrorCodeCannotDisposeAudioUnit            -16
+#define DLGPlayerErrorCodeCannotDeactivateAudio             -17
+#define DLGPlayerErrorCodeCannotStartAudioUnit              -18
+#define DLGPlayerErrorCodeCannotStopAudioUnit               -19
 
 #pragma mark - Notification
 #define DLGPlayerNotificationOpened                 @"DLGPlayerNotificationOpened"
