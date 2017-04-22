@@ -586,7 +586,12 @@
 #pragma mark - Getter
 - (int)videoWidth {
     if (m_pVideoCodecContext == NULL) return 0;
-    return m_pVideoCodecContext->width;
+    int width = m_pVideoCodecContext->width;
+    AVRational sar = m_pVideoCodecContext->sample_aspect_ratio;
+    if (sar.num != 0 && sar.den != 0) {
+        width = width * sar.num / sar.den;
+    }
+    return width;
 }
 
 - (int)videoHeight {
