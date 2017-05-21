@@ -26,6 +26,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
                                         AudioBufferList *ioData);
 
 @interface DLGPlayerAudioManager () {
+    BOOL _registeredKVO;
     BOOL _opened;
     BOOL _shouldPlayAfterInterruption;
     BOOL _playing;
@@ -49,6 +50,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
 }
 
 - (void)initVars {
+    _registeredKVO = NO;
     _opened = NO;
     _shouldPlayAfterInterruption = NO;
     _playing = NO;
@@ -389,18 +391,24 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
                name:AVAudioSessionInterruptionNotification
              object:nil];
     
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session addObserver:self
-              forKeyPath:@"outputVolume"
-                 options:0
-                 context:nil];
+    if (!_registeredKVO) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session addObserver:self
+                  forKeyPath:@"outputVolume"
+                     options:0
+                     context:nil];
+        _registeredKVO = YES;
+    }
 }
 
 - (void)unregisterNotifications {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self];
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session removeObserver:self forKeyPath:@"outputVolume"];
+    if (_registeredKVO) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session removeObserver:self forKeyPath:@"outputVolume"];
+        _registeredKVO = NO;
+    }
 }
 
 - (void)notifyAudioSessionRouteChanged:(NSNotification *)notif {
