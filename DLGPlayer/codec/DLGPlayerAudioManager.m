@@ -28,6 +28,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
 @interface DLGPlayerAudioManager () {
     BOOL _registeredKVO;
     BOOL _opened;
+    BOOL _closing;
     BOOL _shouldPlayAfterInterruption;
     BOOL _playing;
     double _sampleRate;
@@ -52,6 +53,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
 - (void)initVars {
     _registeredKVO = NO;
     _opened = NO;
+    _closing = NO;
     _shouldPlayAfterInterruption = NO;
     _playing = NO;
     _sampleRate = 0;
@@ -234,6 +236,9 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
 }
 
 - (BOOL)close:(NSArray<NSError *> **)errors {
+    if (_closing) return NO;
+    _closing = YES;
+    
     NSMutableArray<NSError *> *errs = nil;
     if (errors != nil) errs = [NSMutableArray array];
     
@@ -292,6 +297,8 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
         
         if (closed) _opened = NO;
     }
+    
+    _closing = NO;
     
     return closed;
 }
