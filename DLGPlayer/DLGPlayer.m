@@ -218,6 +218,7 @@
                 [NSThread sleepForTimeInterval:1.5];
             }
         }
+        self.frameReaderThread = nil;
     }
 }
 
