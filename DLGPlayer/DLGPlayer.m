@@ -200,39 +200,74 @@
 
 - (void)readFrame {
     dispatch_async(_frameReaderQueue, ^{
-        while (_playing && !_decoder.isEOF && !_requestSeek
-               && _bufferedDuration < _maxBufferDuration) {
-            @autoreleasepool {
+        @autoreleasepool {
+            NSMutableArray *tempVFrames = [NSMutableArray arrayWithCapacity:8];
+            NSMutableArray *tempAFrames = [NSMutableArray arrayWithCapacity:8];
+            dispatch_time_t t = dispatch_time(DISPATCH_TIME_NOW, 0.02 * NSEC_PER_SEC);
+            
+            while (_playing && !_decoder.isEOF && !_requestSeek
+                   && _bufferedDuration < _maxBufferDuration) {
                 if (!_buffering) _buffering = YES;
                 NSArray *fs = [_decoder readFrames];
                 if (fs == nil) { break; }
                 {
-                    long timeout = dispatch_semaphore_wait(_vFramesLock, DISPATCH_TIME_NOW);
+                    for (DLGPlayerFrame *f in fs) {
+                        if (f.type == kDLGPlayerFrameTypeVideo) {
+                            [tempVFrames addObject:f];
+                            _bufferedDuration += f.duration;
+                        }
+                    }
+                    
+                    long timeout = dispatch_semaphore_wait(_vFramesLock, t);
                     if (timeout == 0) {
-                        for (DLGPlayerFrame *f in fs) {
-                            if (f.type == kDLGPlayerFrameTypeVideo) {
-                                [_vframes addObject:f];
-                                _bufferedDuration += f.duration;
-                            }
+                        if (tempVFrames.count > 0) {
+                            [_vframes addObjectsFromArray:tempVFrames];
+                            [tempVFrames removeAllObjects];
                         }
                         dispatch_semaphore_signal(_vFramesLock);
                     }
                 }
                 {
-                    long timeout = dispatch_semaphore_wait(_aFramesLock, DISPATCH_TIME_NOW);
+                    for (DLGPlayerFrame *f in fs) {
+                        if (f.type == kDLGPlayerFrameTypeAudio) {
+                            [tempAFrames addObject:f];
+                            if (!_decoder.hasVideo) _bufferedDuration += f.duration;
+                        }
+                    }
+                    
+                    long timeout = dispatch_semaphore_wait(_aFramesLock, t);
                     if (timeout == 0) {
-                        for (DLGPlayerFrame *f in fs) {
-                            if (f.type == kDLGPlayerFrameTypeAudio) {
-                                [_aframes addObject:f];
-                                if (!_decoder.hasVideo) _bufferedDuration += f.duration;
-                            }
+                        if (tempAFrames.count > 0) {
+                            [_aframes addObjectsFromArray:tempAFrames];
+                            [tempAFrames removeAllObjects];
                         }
                         dispatch_semaphore_signal(_aFramesLock);
                     }
                 }
             }
+            
+            // recover the lost video frames
+            while (tempVFrames.count > 0 || tempAFrames.count > 0) {
+                if (tempVFrames.count > 0) {
+                    long timeout = dispatch_semaphore_wait(_vFramesLock, t);
+                    if (timeout == 0) {
+                        [_vframes addObjectsFromArray:tempVFrames];
+                        [tempVFrames removeAllObjects];
+                        dispatch_semaphore_signal(_vFramesLock);
+                    }
+                }
+                if (tempAFrames.count > 0) {
+                    long timeout = dispatch_semaphore_wait(_aFramesLock, t);
+                    if (timeout == 0) {
+                        [_aframes addObjectsFromArray:tempAFrames];
+                        [tempAFrames removeAllObjects];
+                        dispatch_semaphore_signal(_aFramesLock);
+                    }
+                }
+            }
+            
+            _buffering = NO;
         }
-        _buffering = NO;
     });
 }
 
