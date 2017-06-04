@@ -216,6 +216,7 @@
 		C1C4923C1DED4D020004B892 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C1C4923E1DED4D0C0004B892 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		C1C492401DED4D130004B892 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		E807CA151EE3C2F1006D2EA8 /* spherical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spherical.h; sourceTree = "<group>"; };
 		E825C4AC1E629870006E1877 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		E825C4AD1E629870006E1877 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		E825C4AE1E629870006E1877 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
@@ -546,6 +547,7 @@
 				C1C492161DED4BE80004B892 /* samplefmt.h */,
 				C1C492171DED4BE80004B892 /* sha.h */,
 				C1C492181DED4BE80004B892 /* sha512.h */,
+				E807CA151EE3C2F1006D2EA8 /* spherical.h */,
 				C1C492191DED4BE80004B892 /* stereo3d.h */,
 				C1C4921A1DED4BE80004B892 /* tea.h */,
 				C1C4921B1DED4BE80004B892 /* threadmessage.h */,
