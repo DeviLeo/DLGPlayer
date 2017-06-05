@@ -11,8 +11,8 @@ Great thanks for Konstantin Boukreev's kxmovie.
 |Landscape|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.01.05%20PM.png)|![](https://github.com/DeviLeo/Screenshots/blob/master/DLGPlayer/Simulator%20Screen%20Shot%2022%20Dec%202016%2C%202.07.38%20PM.png)|
 
 ## 1. Build FFmpeg for iOS
-#### (0) Support Https (Optional)  
-If you want to make FFmpeg support Https, please see [How to make FFmpeg support https](HowToMakeFFmpegSupportHttps "HowToMakeFFmpegSupportHttps") first or continue.  
+#### (0) Support https (Optional)  
+If you want to build FFmpeg with OpenSSL to support https, please see [How to build FFmpeg with OpenSSL](https://github.com/DeviLeo/DLGPlayer/blob/support_https/How_to_build_ffmpeg_with_openssl.md "https://github.com/DeviLeo/DLGPlayer/blob/support_https/How_to_build_ffmpeg_with_openssl.md") first, or continue.  
 
 #### (1) Download FFmpeg source from [FFmpeg official site](http://ffmpeg.org/download.html "http://ffmpeg.org/download.html").  
 Download and unzip ffmpeg-3.3.1.tar.bz2  
