@@ -79,11 +79,11 @@ Make sure the **"build-ffmpeg-openssl.sh"** file is under the **"FFmpeg-iOS-buil
 ## 6. Run "build-ffmpeg-openssl.sh"
 Run and wait.  
 
-## 7. Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder
-Put built **"ffmpeg/include"** and **"ffmpeg/lib"** folders into example project's **"DLGPlayer/Externals/ffmpeg"** folder.  
+## 7. Put built FFmpeg include files and libraries into "DLGPlayer/Externals/ffmpeg" folder
+Put built **"ffmpeg/include"** and **"ffmpeg/lib"** folders into the example project's **"DLGPlayer/Externals/ffmpeg"** folder.  
 
-## 8. Add OpenSSL into example project
-Put **"openssl"** folder into example project's **"DLGPlayer/Externals/ffmpeg"** folder.  
+## 8. Add OpenSSL into the example project
+Put **"openssl"** folder into the example project's **"DLGPlayer/Externals"** folder.  
 In Xcode, right click **"Externals"** folder, choose **"Add Files to ..."**, select **"openssl"** folder and click **"Add"** button.  
 
 ## 9. Run the demo
