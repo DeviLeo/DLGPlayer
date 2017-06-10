@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DLGPlayerDef.h"
 
-typedef void (^onPauseComplete)();
+typedef void (^onPauseComplete)(void);
 
 @interface DLGPlayer : NSObject
 
