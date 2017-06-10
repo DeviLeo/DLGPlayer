@@ -7,10 +7,6 @@
 //
 
 #import "ViewController.h"
-#import <libavcodec/avcodec.h>
-#import <libavformat/avformat.h>
-#import <libavutil/imgutils.h>
-#import <libswscale/swscale.h>
 #import "DLGPlayerViewController.h"
 
 @interface ViewController () <UITextFieldDelegate>
