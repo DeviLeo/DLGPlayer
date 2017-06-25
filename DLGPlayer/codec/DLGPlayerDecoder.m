@@ -19,6 +19,18 @@
 #import <libswresample/swresample.h>
 #import <Accelerate/Accelerate.h>
 
+#define DLGPlayerIOTimeout 30
+
+static NSTimeInterval g_dIOStartTime = 0;
+static bool g_bPrepareClose = FALSE;
+
+static int interruptCallback(void *context) {
+    NSTimeInterval t = [NSDate timeIntervalSinceReferenceDate];
+    NSTimeInterval dt = t - g_dIOStartTime;
+    if (g_bPrepareClose || dt > DLGPlayerIOTimeout) return 1;
+    return 0;
+}
+
 @interface DLGPlayerDecoder () {
     AVFormatContext *m_pFormatContext;
     
@@ -49,6 +61,10 @@
         av_register_all();
     }
     return self;
+}
+
+- (void)dealloc {
+    NSLog(@"DLGPlayerDecoder dealloc");
 }
 
 - (BOOL)open:(NSString *)url error:(NSError **)error {
@@ -99,16 +115,18 @@
     int picstream = -1;
     int vstream = [self findVideoStream:fmtctx context:&vcodectx pictureStream:&picstream];
     if (vstream >= 0 && vcodectx != NULL) {
-        vframe = av_frame_alloc();
-        isYUV = (vcodectx->pix_fmt == AV_PIX_FMT_YUV420P || vcodectx->pix_fmt == AV_PIX_FMT_YUVJ420P);
-        if (!isYUV) {
-            vswsframe = av_frame_alloc();
-            ret = av_image_alloc(vswsframe->data, vswsframe->linesize, vcodectx->width, vcodectx->height, AV_PIX_FMT_RGB24, 1);
-            swsctx = sws_getContext(vcodectx->width, vcodectx->height, vcodectx->pix_fmt,
-                                    vcodectx->width, vcodectx->height, AV_PIX_FMT_RGB24,
-                                    SWS_BILINEAR, NULL, NULL, NULL);
+        if (vcodectx->pix_fmt != AV_PIX_FMT_NONE) {
+            vframe = av_frame_alloc();
+            isYUV = (vcodectx->pix_fmt == AV_PIX_FMT_YUV420P || vcodectx->pix_fmt == AV_PIX_FMT_YUVJ420P);
+            if (!isYUV) {
+                vswsframe = av_frame_alloc();
+                ret = av_image_alloc(vswsframe->data, vswsframe->linesize, vcodectx->width, vcodectx->height, AV_PIX_FMT_RGB24, 1);
+                swsctx = sws_getContext(vcodectx->width, vcodectx->height, vcodectx->pix_fmt,
+                                        vcodectx->width, vcodectx->height, AV_PIX_FMT_RGB24,
+                                        SWS_BILINEAR, NULL, NULL, NULL);
+            }
+            [DLGPlayerDecoder stream:fmtctx->streams[vstream] fps:&_videoFPS timebase:&_videoTimebase default:0.04];
         }
-        [DLGPlayerDecoder stream:fmtctx->streams[vstream] fps:&_videoFPS timebase:&_videoTimebase default:0.04];
         
         BOOL swsError = isYUV ? NO : (swsctx == NULL || vswsframe == NULL);
         if (vframe == NULL || swsError || ret < 0) {
@@ -188,6 +206,10 @@
     int64_t duration = fmtctx->duration;
     self.duration = (duration == AV_NOPTS_VALUE ? -1 : ((double)duration / AV_TIME_BASE));
     self.metadata = [self findMetadata:fmtctx];
+    
+    g_bPrepareClose = FALSE;
+    AVIOInterruptCB icb = {interruptCallback, NULL};
+    fmtctx->interrupt_callback = icb;
     
     return YES;
 }
@@ -292,6 +314,10 @@
 }
 
 #pragma mark - Close
+- (void)prepareClose {
+    g_bPrepareClose = TRUE;
+}
+
 - (void)close {
     [self flush:m_pVideoCodecContext frame:m_pVideoFrame];
     [self flush:m_pAudioCodecContext frame:m_pAudioFrame];
@@ -356,6 +382,7 @@
     NSMutableArray *frames = [NSMutableArray arrayWithCapacity:15];
     BOOL reading = YES;
     while (reading) {
+        g_dIOStartTime = [NSDate timeIntervalSinceReferenceDate];
         int ret = av_read_frame(fmtctx, &packet);
         if (ret < 0) {
             if (ret == AVERROR_EOF) self.isEOF = YES;

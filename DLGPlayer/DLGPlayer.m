@@ -160,6 +160,7 @@
         return;
     }
     [self pause];
+    [_decoder prepareClose];
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC, 0.1 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
@@ -227,24 +228,29 @@
     
     NSMutableArray *tempVFrames = [NSMutableArray arrayWithCapacity:8];
     NSMutableArray *tempAFrames = [NSMutableArray arrayWithCapacity:8];
+    double tempDuration = 0;
     dispatch_time_t t = dispatch_time(DISPATCH_TIME_NOW, 0.02 * NSEC_PER_SEC);
     
     while (_playing && !_decoder.isEOF && !_requestSeek
-           && _bufferedDuration < _maxBufferDuration) {
+           && (_bufferedDuration + tempDuration) < _maxBufferDuration) {
         @autoreleasepool {
             NSArray *fs = [_decoder readFrames];
             if (fs == nil) { break; }
+            if (fs.count == 0) { continue; }
+            
             {
                 for (DLGPlayerFrame *f in fs) {
                     if (f.type == kDLGPlayerFrameTypeVideo) {
                         [tempVFrames addObject:f];
-                        _bufferedDuration += f.duration;
+                        tempDuration += f.duration;
                     }
                 }
                 
                 long timeout = dispatch_semaphore_wait(_vFramesLock, t);
                 if (timeout == 0) {
                     if (tempVFrames.count > 0) {
+                        _bufferedDuration += tempDuration;
+                        tempDuration = 0;
                         [_vframes addObjectsFromArray:tempVFrames];
                         [tempVFrames removeAllObjects];
                     }
@@ -255,13 +261,17 @@
                 for (DLGPlayerFrame *f in fs) {
                     if (f.type == kDLGPlayerFrameTypeAudio) {
                         [tempAFrames addObject:f];
-                        if (!_decoder.hasVideo) _bufferedDuration += f.duration;
+                        if (!_decoder.hasVideo) tempDuration += f.duration;
                     }
                 }
                 
                 long timeout = dispatch_semaphore_wait(_aFramesLock, t);
                 if (timeout == 0) {
                     if (tempAFrames.count > 0) {
+                        if (!_decoder.hasVideo) {
+                            _bufferedDuration += tempDuration;
+                            tempDuration = 0;
+                        }
                         [_aframes addObjectsFromArray:tempAFrames];
                         [tempAFrames removeAllObjects];
                     }
@@ -272,11 +282,13 @@
     }
     
     {
-        // recover the lost video frames
+        // add the rest video frames
         while (tempVFrames.count > 0 || tempAFrames.count > 0) {
             if (tempVFrames.count > 0) {
                 long timeout = dispatch_semaphore_wait(_vFramesLock, t);
                 if (timeout == 0) {
+                    _bufferedDuration += tempDuration;
+                    tempDuration = 0;
                     [_vframes addObjectsFromArray:tempVFrames];
                     [tempVFrames removeAllObjects];
                     dispatch_semaphore_signal(_vFramesLock);
@@ -285,6 +297,10 @@
             if (tempAFrames.count > 0) {
                 long timeout = dispatch_semaphore_wait(_aFramesLock, t);
                 if (timeout == 0) {
+                    if (!_decoder.hasVideo) {
+                        _bufferedDuration += tempDuration;
+                        tempDuration = 0;
+                    }
                     [_aframes addObjectsFromArray:tempAFrames];
                     [tempAFrames removeAllObjects];
                     dispatch_semaphore_signal(_aFramesLock);

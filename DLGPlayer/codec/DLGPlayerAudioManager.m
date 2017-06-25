@@ -65,7 +65,7 @@ static OSStatus audioUnitRenderCallback(void *inRefCon,
 }
 
 - (void)dealloc {
-    [self close];
+    NSLog(@"DLGPlayerAudioManager dealloc");
     if (_audioData != NULL) {
         free(_audioData);
         _audioData = NULL;

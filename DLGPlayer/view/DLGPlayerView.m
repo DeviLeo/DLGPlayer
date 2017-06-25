@@ -57,6 +57,10 @@
     return self;
 }
 
+- (void)dealloc {
+    NSLog(@"DLGPlayerView dealloc");
+}
+
 + (Class)layerClass {
     return [CAEAGLLayer class];
 }
