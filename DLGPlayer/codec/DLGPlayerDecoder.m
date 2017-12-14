@@ -537,7 +537,7 @@ static int interruptCallback(void *context) {
         
         void *data = NULL;
         NSInteger samplesPerChannel = 0;
-        if (swrctx != NULL) {
+        if (swrctx != NULL && swrbuf != NULL) {
             float sampleRatio = sampleRate / context->sample_rate;
             float channelRatio = channels / context->channels;
             float ratio = MAX(1, sampleRatio) * MAX(1, channelRatio) * 2;
@@ -547,7 +547,7 @@ static int interruptCallback(void *context) {
                                                      samples,
                                                      AV_SAMPLE_FMT_S16,
                                                      1);
-            if (swrbuf == NULL || *swrbufsize < bufsize) {
+            if (*swrbuf == NULL || *swrbufsize < bufsize) {
                 *swrbufsize = bufsize;
                 *swrbuf = realloc(*swrbuf, bufsize);
             }
