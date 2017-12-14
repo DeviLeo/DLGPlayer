@@ -17,27 +17,27 @@
 
 @interface DLGPlayer ()
 
-@property (nonatomic) DLGPlayerView *view;
-@property (nonatomic) DLGPlayerDecoder *decoder;
-@property (nonatomic) DLGPlayerAudioManager *audio;
+@property (nonatomic, strong) DLGPlayerView *view;
+@property (nonatomic, strong) DLGPlayerDecoder *decoder;
+@property (nonatomic, strong) DLGPlayerAudioManager *audio;
 
-@property (nonatomic) NSMutableArray *vframes;
-@property (nonatomic) NSMutableArray *aframes;
-@property (nonatomic) DLGPlayerAudioFrame *playingAudioFrame;
+@property (nonatomic, strong) NSMutableArray *vframes;
+@property (nonatomic, strong) NSMutableArray *aframes;
+@property (nonatomic, strong) DLGPlayerAudioFrame *playingAudioFrame;
 @property (nonatomic) NSUInteger playingAudioFrameDataPosition;
 @property (nonatomic) double bufferedDuration;
 @property (nonatomic) double mediaPosition;
 @property (nonatomic) double mediaSyncTime;
 @property (nonatomic) double mediaSyncPosition;
 
-@property (nonatomic) NSThread *frameReaderThread;
+@property (nonatomic, strong) NSThread *frameReaderThread;
 @property (nonatomic) BOOL notifiedBufferStart;
 @property (nonatomic) BOOL requestSeek;
 @property (nonatomic) double requestSeekPosition;
 @property (nonatomic) BOOL opening;
 
-@property (nonatomic) dispatch_semaphore_t vFramesLock;
-@property (nonatomic) dispatch_semaphore_t aFramesLock;
+@property (nonatomic, strong) dispatch_semaphore_t vFramesLock;
+@property (nonatomic, strong) dispatch_semaphore_t aFramesLock;
 
 @end
 

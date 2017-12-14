@@ -13,7 +13,7 @@ typedef void (^onPauseComplete)(void);
 
 @interface DLGPlayer : NSObject
 
-@property (readonly) UIView *playerView;
+@property (readonly, strong) UIView *playerView;
 
 @property (nonatomic) double minBufferDuration;
 @property (nonatomic) double maxBufferDuration;
@@ -22,7 +22,7 @@ typedef void (^onPauseComplete)(void);
 @property (nonatomic) BOOL opened;
 @property (nonatomic) BOOL playing;
 @property (nonatomic) BOOL buffering;
-@property (nonatomic) NSDictionary *metadata;
+@property (nonatomic, strong) NSDictionary *metadata;
 
 - (void)open:(NSString *)url;
 - (void)close;

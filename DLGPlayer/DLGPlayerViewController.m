@@ -23,8 +23,8 @@ typedef enum : NSUInteger {
     NSTimeInterval showHUDTime;
 }
 
-@property (nonatomic) DLGPlayer *player;
-@property (nonatomic) UIActivityIndicatorView *aivBuffering;
+@property (nonatomic, strong) DLGPlayer *player;
+@property (nonatomic, strong) UIActivityIndicatorView *aivBuffering;
 
 @property (nonatomic, weak) UIView *vTopBar;
 @property (nonatomic, weak) UILabel *lblTitle;

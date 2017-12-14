@@ -29,7 +29,7 @@
     GLfloat _texcoord[8];
 }
 
-@property (nonatomic) DLGPlayerVideoFrame *lastFrame;
+@property (nonatomic, strong) DLGPlayerVideoFrame *lastFrame;
 
 @end
 

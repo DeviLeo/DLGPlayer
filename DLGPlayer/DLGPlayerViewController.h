@@ -23,7 +23,7 @@ typedef enum : NSUInteger {
 
 @interface DLGPlayerViewController : UIViewController
 
-@property (nonatomic) NSString *url;
+@property (nonatomic, copy) NSString *url;
 @property (nonatomic) BOOL autoplay;
 @property (nonatomic) BOOL repeat;
 @property (nonatomic) BOOL preventFromScreenLock;
