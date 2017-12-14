@@ -76,7 +76,7 @@
     [self createGLBuffer];
     [self createGLProgram];
     [self updatePosition];
-    [self render:_lastFrame];
+    [self render:self.lastFrame];
 }
 
 - (void)clear {

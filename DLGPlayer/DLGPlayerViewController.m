@@ -79,11 +79,11 @@ typedef enum : NSUInteger {
                name:UIApplicationDidEnterBackgroundNotification object:nil];
     [nc addObserver:self selector:@selector(notifyAppWillEnterForeground:)
                name:UIApplicationWillEnterForegroundNotification object:nil];
-    [nc addObserver:self selector:@selector(notifyPlayerOpened:) name:DLGPlayerNotificationOpened object:_player];
-    [nc addObserver:self selector:@selector(notifyPlayerClosed:) name:DLGPlayerNotificationClosed object:_player];
-    [nc addObserver:self selector:@selector(notifyPlayerEOF:) name:DLGPlayerNotificationEOF object:_player];
-    [nc addObserver:self selector:@selector(notifyPlayerBufferStateChanged:) name:DLGPlayerNotificationBufferStateChanged object:_player];
-    [nc addObserver:self selector:@selector(notifyPlayerError:) name:DLGPlayerNotificationError object:_player];
+    [nc addObserver:self selector:@selector(notifyPlayerOpened:) name:DLGPlayerNotificationOpened object:self.player];
+    [nc addObserver:self selector:@selector(notifyPlayerClosed:) name:DLGPlayerNotificationClosed object:self.player];
+    [nc addObserver:self selector:@selector(notifyPlayerEOF:) name:DLGPlayerNotificationEOF object:self.player];
+    [nc addObserver:self selector:@selector(notifyPlayerBufferStateChanged:) name:DLGPlayerNotificationBufferStateChanged object:self.player];
+    [nc addObserver:self selector:@selector(notifyPlayerError:) name:DLGPlayerNotificationError object:self.player];
 }
 
 - (void)unregisterNotification {
@@ -103,7 +103,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)onPlayButtonTapped:(id)sender {
-    if (_player.playing) {
+    if (self.player.playing) {
         [self pause];
     } else {
         [self play];
@@ -118,13 +118,13 @@ typedef enum : NSUInteger {
 - (void)onSliderValueChanged:(id)sender {
     UISlider *slider = sender;
     int seconds = slider.value;
-    _lblPosition.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
+    self.lblPosition.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
 }
 
 - (void)onSliderEndSlide:(id)sender {
     UISlider *slider = sender;
     float position = slider.value;
-    _player.position = position;
+    self.player.position = position;
     self.updateHUD = YES;
     self.grTap.enabled = YES;
 }
@@ -135,16 +135,16 @@ typedef enum : NSUInteger {
 
 - (void)syncHUD:(BOOL)force {
     if (!force) {
-        if (_vTopBar.hidden) return;
-        if (!_player.playing) return;
-        if (!_updateHUD) return;
+        if (self.vTopBar.hidden) return;
+        if (!self.player.playing) return;
+        if (!self.updateHUD) return;
     }
     
     // position
-    double position = _player.position;
+    double position = self.player.position;
     int seconds = ceil(position);
-    _lblPosition.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
-    _sldPosition.value = seconds;
+    self.lblPosition.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
+    self.sldPosition.value = seconds;
 }
 
 - (void)open {
@@ -157,9 +157,9 @@ typedef enum : NSUInteger {
         return;
     }
     self.status = DLGPlayerStatusOpening;
-    _aivBuffering.hidden = NO;
-    [_aivBuffering startAnimating];
-    [self.player open:_url];
+    self.aivBuffering.hidden = NO;
+    [self.aivBuffering startAnimating];
+    [self.player open:self.url];
 }
 
 - (void)close {
@@ -170,7 +170,7 @@ typedef enum : NSUInteger {
     self.status = DLGPlayerStatusClosing;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self.player close];
-    [_btnPlay setTitle:@"|>" forState:UIControlStateNormal];
+    [self.btnPlay setTitle:@"|>" forState:UIControlStateNormal];
 }
 
 - (void)play {
@@ -185,9 +185,9 @@ typedef enum : NSUInteger {
         return;
     }
     self.status = DLGPlayerStatusPlaying;
-    [UIApplication sharedApplication].idleTimerDisabled = _preventFromScreenLock;
+    [UIApplication sharedApplication].idleTimerDisabled = self.preventFromScreenLock;
     [self.player play];
-    [_btnPlay setTitle:@"||" forState:UIControlStateNormal];
+    [self.btnPlay setTitle:@"||" forState:UIControlStateNormal];
 }
 
 - (void)replay {
@@ -204,12 +204,12 @@ typedef enum : NSUInteger {
     self.status = DLGPlayerStatusPaused;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [self.player pause];
-    [_btnPlay setTitle:@"|>" forState:UIControlStateNormal];
+    [self.btnPlay setTitle:@"|>" forState:UIControlStateNormal];
 }
 
 - (BOOL)doNextOperation {
-    if (_nextOperation == DLGPlayerOperationNone) return NO;
-    switch (_nextOperation) {
+    if (self.nextOperation == DLGPlayerOperationNone) return NO;
+    switch (self.nextOperation) {
         case DLGPlayerOperationOpen:
             [self open];
             break;
@@ -231,9 +231,9 @@ typedef enum : NSUInteger {
 
 #pragma mark - Notifications
 - (void)notifyAppDidEnterBackground:(NSNotification *)notif {
-    if (_player.playing) {
+    if (self.player.playing) {
         [self pause];
-        if (_restorePlayAfterAppEnterForeground) restorePlay = YES;
+        if (self.restorePlayAfterAppEnterForeground) restorePlay = YES;
     }
 }
 
@@ -246,46 +246,54 @@ typedef enum : NSUInteger {
 
 - (void)notifyPlayerEOF:(NSNotification *)notif {
     self.status = DLGPlayerStatusEOF;
-    if (_repeat) [self replay];
+    if (self.repeat) [self replay];
     else [self close];
 }
 
 - (void)notifyPlayerClosed:(NSNotification *)notif {
     self.status = DLGPlayerStatusClosed;
-    [_aivBuffering stopAnimating];
+    [self.aivBuffering stopAnimating];
     [self destroyTimer];
     [self doNextOperation];
 }
 
 - (void)notifyPlayerOpened:(NSNotification *)notif {
+    __weak typeof(self)weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_aivBuffering stopAnimating];
+        [weakSelf.aivBuffering stopAnimating];
     });
     
     self.status = DLGPlayerStatusOpened;
     dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(weakSelf)strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+
         NSString *title = nil;
-        if (_player.metadata != nil) {
-            NSString *t = _player.metadata[@"title"];
-            NSString *a = _player.metadata[@"artist"];
+        if (strongSelf.player.metadata != nil) {
+            NSString *t = strongSelf.player.metadata[@"title"];
+            NSString *a = strongSelf.player.metadata[@"artist"];
             if (t != nil) title = t;
             if (a != nil) title = [title stringByAppendingFormat:@" - %@", a];
         }
-        if (title == nil) title = [_url lastPathComponent];
-        _lblTitle.text = title;
-        double duration = _player.duration;
+        if (title == nil) title = [strongSelf.url lastPathComponent];
+
+        strongSelf.lblTitle.text = title;
+        double duration = strongSelf.player.duration;
         int seconds = ceil(duration);
-        _lblDuration.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
-        _sldPosition.enabled = seconds > 0;
-        _sldPosition.maximumValue = seconds;
-        _sldPosition.minimumValue = 0;
-        _sldPosition.value = 0;
-        _updateHUD = YES;
-        [self createTimer];
-        [self showHUD];
+        strongSelf.lblDuration.text = [DLGPlayerUtils durationStringFromSeconds:seconds];
+        strongSelf.sldPosition.enabled = seconds > 0;
+        strongSelf.sldPosition.maximumValue = seconds;
+        strongSelf.sldPosition.minimumValue = 0;
+        strongSelf.sldPosition.value = 0;
+        strongSelf.updateHUD = YES;
+        [strongSelf createTimer];
+        [strongSelf showHUD];
     });
+
     if (![self doNextOperation]) {
-        if (_autoplay) [self play];
+        if (self.autoplay) [self play];
     }
 }
 
@@ -294,22 +302,30 @@ typedef enum : NSUInteger {
     BOOL state = [userInfo[DLGPlayerNotificationBufferStateKey] boolValue];
     if (state) {
         self.status = DLGPlayerStatusBuffering;
-        [_aivBuffering startAnimating];
+        [self.aivBuffering startAnimating];
     } else {
         self.status = DLGPlayerStatusPlaying;
-        [_aivBuffering stopAnimating];
+        [self.aivBuffering stopAnimating];
     }
 }
 
 - (void)notifyPlayerError:(NSNotification *)notif {
     NSDictionary *userInfo = notif.userInfo;
     NSError *error = userInfo[DLGPlayerNotificationErrorKey];
+
     if ([error.domain isEqualToString:DLGPlayerErrorDomainDecoder]) {
+        __weak typeof(self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_aivBuffering stopAnimating];
-            self.status = DLGPlayerStatusNone;
-            self.nextOperation = DLGPlayerOperationNone;
+            __strong typeof(weakSelf)strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+
+            [strongSelf.aivBuffering stopAnimating];
+            strongSelf.status = DLGPlayerStatusNone;
+            strongSelf.nextOperation = DLGPlayerOperationNone;
         });
+
         NSLog(@"Player decoder error: %@", error);
     } else if ([error.domain isEqualToString:DLGPlayerErrorDomainAudioManager]) {
         NSLog(@"Player audio error: %@", error);
@@ -322,7 +338,7 @@ typedef enum : NSUInteger {
 #pragma mark - UI
 - (void)initPlayer {
     self.player = [[DLGPlayer alloc] init];
-    UIView *v = _player.playerView;
+    UIView *v = self.player.playerView;
     v.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:v];
     
@@ -346,7 +362,7 @@ typedef enum : NSUInteger {
     aiv.hidesWhenStopped = YES;
     [self.view addSubview:aiv];
     
-    UIView *playerView = _player.playerView;
+    UIView *playerView = self.player.playerView;
     
     // Add constraints
     NSLayoutConstraint *cx = [NSLayoutConstraint constraintWithItem:aiv
@@ -497,14 +513,18 @@ typedef enum : NSUInteger {
 #pragma mark - Show/Hide HUD
 - (void)showHUD {
     if (animatingHUD) return;
+
     [self syncHUD:YES];
     animatingHUD = YES;
-    _vTopBar.hidden = NO;
-    _vBottomBar.hidden = NO;
+    self.vTopBar.hidden = NO;
+    self.vBottomBar.hidden = NO;
+
+    __weak typeof(self)weakSelf = self;
     [UIView animateWithDuration:0.5f
                      animations:^{
-                         _vTopBar.alpha = 1.0f;
-                         _vBottomBar.alpha = 1.0f;
+                         __strong typeof(weakSelf)strongSelf = weakSelf;
+                         strongSelf.vTopBar.alpha = 1.0f;
+                         strongSelf.vBottomBar.alpha = 1.0f;
                      }
                      completion:^(BOOL finished) {
                          animatingHUD = NO;
@@ -515,14 +535,20 @@ typedef enum : NSUInteger {
 - (void)hideHUD {
     if (animatingHUD) return;
     animatingHUD = YES;
+
+    __weak typeof(self)weakSelf = self;
     [UIView animateWithDuration:0.5f
                      animations:^{
-                         _vTopBar.alpha = 0.0f;
-                         _vBottomBar.alpha = 0.0f;
+                         __strong typeof(weakSelf)strongSelf = weakSelf;
+                         strongSelf.vTopBar.alpha = 0.0f;
+                         strongSelf.vBottomBar.alpha = 0.0f;
                      }
                      completion:^(BOOL finished) {
-                         _vTopBar.hidden = YES;
-                         _vBottomBar.hidden = YES;
+                         __strong typeof(weakSelf)strongSelf = weakSelf;
+
+                         strongSelf.vTopBar.hidden = YES;
+                         strongSelf.vBottomBar.hidden = YES;
+
                          animatingHUD = NO;
                      }];
     [self stopTimerForHideHUD];
@@ -531,13 +557,13 @@ typedef enum : NSUInteger {
 #pragma mark - Timer
 - (void)startTimerForHideHUD {
     [self updateTimerForHideHUD];
-    if (_timerForHUD != nil) return;
+    if (self.timerForHUD != nil) return;
     self.timerForHUD = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerForHideHUD:) userInfo:nil repeats:YES];
 }
 
 - (void)stopTimerForHideHUD {
-    if (_timerForHUD == nil) return;
-    [_timerForHUD invalidate];
+    if (self.timerForHUD == nil) return;
+    [self.timerForHUD invalidate];
     self.timerForHUD = nil;
 }
 
@@ -556,25 +582,29 @@ typedef enum : NSUInteger {
 #pragma mark - Gesture
 - (void)onTapGesutreRecognizer:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded) {
-        if (_vTopBar.hidden) [self showHUD];
+        if (self.vTopBar.hidden) [self showHUD];
         else [self hideHUD];
     }
 }
 
 - (void)createTimer {
-    if (_timer != nil) return;
+    if (self.timer != nil) return;
+
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
+
+    __weak typeof(self)weakSelf = self;
     dispatch_source_set_event_handler(timer, ^{
-        [self syncHUD];
+        [weakSelf syncHUD];
     });
     dispatch_resume(timer);
     self.timer = timer;
 }
 
 - (void)destroyTimer {
-    if (_timer == nil) return;
-    dispatch_cancel(_timer);
+    if (self.timer == nil) return;
+    
+    dispatch_cancel(self.timer);
     self.timer = nil;
 }
 
