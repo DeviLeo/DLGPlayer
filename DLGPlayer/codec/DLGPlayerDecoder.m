@@ -425,14 +425,16 @@ static int interruptCallback(void *context) {
     size_t height = CGImageGetHeight(image);
     NSUInteger length = width * height * 4;
     GLubyte *imageData = malloc(length);
+    struct CGColorSpace *colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(imageData,
                                                  width,
                                                  height,
                                                  8,
                                                  width * 4,
-                                                 CGColorSpaceCreateDeviceRGB(),
+                                                 colorSpace,
                                                  kCGImageAlphaPremultipliedLast);
     if (context == NULL) {
+        CGColorSpaceRelease(colorSpace);
         CGImageRelease(image);
         CGDataProviderRelease(provider);
         free(imageData);
@@ -440,6 +442,8 @@ static int interruptCallback(void *context) {
     }
     
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
+
+    CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
     CGImageRelease(image);
     CGDataProviderRelease(provider);
