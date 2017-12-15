@@ -94,9 +94,9 @@ typedef enum : NSUInteger {
 #pragma mark - Init
 - (void)initAll {
     [self initPlayer];
-    [self initBuffering];
     [self initTopBar];
     [self initBottomBar];
+    [self initBuffering];
     [self initGestures];
     self.status = DLGPlayerStatusNone;
     self.nextOperation = DLGPlayerOperationNone;
@@ -357,25 +357,25 @@ typedef enum : NSUInteger {
 }
 
 - (void)initBuffering {
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     aiv.translatesAutoresizingMaskIntoConstraints = NO;
     aiv.hidesWhenStopped = YES;
     [self.view addSubview:aiv];
     
-    UIView *playerView = self.player.playerView;
+    UIView *topbar = self.vTopBar;
     
     // Add constraints
     NSLayoutConstraint *cx = [NSLayoutConstraint constraintWithItem:aiv
-                                                          attribute:NSLayoutAttributeCenterX
+                                                          attribute:NSLayoutAttributeRight
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:playerView
-                                                          attribute:NSLayoutAttributeCenterX
+                                                             toItem:topbar
+                                                          attribute:NSLayoutAttributeRight
                                                          multiplier:1
-                                                           constant:0];
+                                                           constant:-8];
     NSLayoutConstraint *cy = [NSLayoutConstraint constraintWithItem:aiv
                                                           attribute:NSLayoutAttributeCenterY
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:playerView
+                                                             toItem:topbar
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1
                                                            constant:0];
