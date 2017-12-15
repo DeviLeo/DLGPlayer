@@ -17,7 +17,7 @@
 @property (nonatomic) BOOL isEOF;
 
 @property (nonatomic) double duration;
-@property (nonatomic) NSDictionary *metadata;
+@property (nonatomic, strong) NSDictionary *metadata;
 
 @property (nonatomic) UInt32 audioChannels;
 @property (nonatomic) float audioSampleRate;

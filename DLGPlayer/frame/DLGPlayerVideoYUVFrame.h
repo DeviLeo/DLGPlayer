@@ -10,8 +10,8 @@
 
 @interface DLGPlayerVideoYUVFrame : DLGPlayerVideoFrame
 
-@property (nonatomic) NSData *Y;    // Luma
-@property (nonatomic) NSData *Cb;   // Chroma Blue
-@property (nonatomic) NSData *Cr;   // Chroma Red
+@property (nonatomic, strong) NSData *Y;    // Luma
+@property (nonatomic, strong) NSData *Cb;   // Chroma Blue
+@property (nonatomic, strong) NSData *Cr;   // Chroma Red
 
 @end

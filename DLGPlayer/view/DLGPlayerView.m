@@ -29,7 +29,7 @@
     GLfloat _texcoord[8];
 }
 
-@property (nonatomic) DLGPlayerVideoFrame *lastFrame;
+@property (nonatomic, strong) DLGPlayerVideoFrame *lastFrame;
 
 @end
 
@@ -76,7 +76,7 @@
     [self createGLBuffer];
     [self createGLProgram];
     [self updatePosition];
-    [self render:_lastFrame];
+    [self render:self.lastFrame];
 }
 
 - (void)clear {

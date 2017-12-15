@@ -425,14 +425,16 @@ static int interruptCallback(void *context) {
     size_t height = CGImageGetHeight(image);
     NSUInteger length = width * height * 4;
     GLubyte *imageData = malloc(length);
+    struct CGColorSpace *colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(imageData,
                                                  width,
                                                  height,
                                                  8,
                                                  width * 4,
-                                                 CGColorSpaceCreateDeviceRGB(),
+                                                 colorSpace,
                                                  kCGImageAlphaPremultipliedLast);
     if (context == NULL) {
+        CGColorSpaceRelease(colorSpace);
         CGImageRelease(image);
         CGDataProviderRelease(provider);
         free(imageData);
@@ -440,6 +442,8 @@ static int interruptCallback(void *context) {
     }
     
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
+
+    CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
     CGImageRelease(image);
     CGDataProviderRelease(provider);
@@ -533,7 +537,7 @@ static int interruptCallback(void *context) {
         
         void *data = NULL;
         NSInteger samplesPerChannel = 0;
-        if (swrctx != NULL) {
+        if (swrctx != NULL && swrbuf != NULL) {
             float sampleRatio = sampleRate / context->sample_rate;
             float channelRatio = channels / context->channels;
             float ratio = MAX(1, sampleRatio) * MAX(1, channelRatio) * 2;
@@ -543,7 +547,7 @@ static int interruptCallback(void *context) {
                                                      samples,
                                                      AV_SAMPLE_FMT_S16,
                                                      1);
-            if (swrbuf == NULL || *swrbufsize < bufsize) {
+            if (*swrbuf == NULL || *swrbufsize < bufsize) {
                 *swrbufsize = bufsize;
                 *swrbuf = realloc(*swrbuf, bufsize);
             }
