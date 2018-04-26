@@ -55,14 +55,6 @@ static int interruptCallback(void *context) {
 
 @implementation DLGPlayerDecoder
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        av_register_all();
-    }
-    return self;
-}
-
 - (void)dealloc {
     NSLog(@"DLGPlayerDecoder dealloc");
 }
@@ -506,8 +498,8 @@ static int interruptCallback(void *context) {
         
         f.width = width;
         f.height = height;
-        f.position = av_frame_get_best_effort_timestamp(frame) * _videoTimebase;
-        double duration = av_frame_get_pkt_duration(frame);
+        f.position = frame->best_effort_timestamp * _videoTimebase;
+        double duration = frame->pkt_duration;
         if (duration > 0) {
             f.duration = duration * _videoTimebase;
             f.duration += frame->repeat_pict * _videoTimebase * 0.5;
@@ -580,8 +572,8 @@ static int interruptCallback(void *context) {
         
         DLGPlayerAudioFrame *f = [[DLGPlayerAudioFrame alloc] init];
         f.data = mdata;
-        f.position = av_frame_get_best_effort_timestamp(frame) * _audioTimebase;
-        f.duration = av_frame_get_pkt_duration(frame) * _audioTimebase;
+        f.position = frame->best_effort_timestamp * _audioTimebase;
+        f.duration = frame->pkt_duration * _audioTimebase;
         
         if (f.duration == 0)
             f.duration = f.data.length / (sizeof(float) * channels * sampleRate);
