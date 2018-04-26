@@ -1,5 +1,5 @@
 # DLGPlayer
-A media player for iOS based on FFmpeg 4.0.  
+A media player for iOS based on FFmpeg 4.0.  
 DLGPlayer uses [kolyvan/kxmovie](https://github.com/kolyvan/kxmovie "https://github.com/kolyvan/kxmovie") as reference when written and **NO deprecated** functions and methods are used.  
 If you found any deprecated function or method, please submit an issue to me.  
 Great thanks for Konstantin Boukreev's kxmovie.  
@@ -19,6 +19,12 @@ Download and unzip ffmpeg-4.0.tar.bz2  
 
 #### (2) Use [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") to build FFmpeg for iOS  
 Follow the steps in the [README.md](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") of [kewlbear/FFmpeg-iOS-build-script](https://github.com/kewlbear/FFmpeg-iOS-build-script "https://github.com/kewlbear/FFmpeg-iOS-build-script") to build FFmpeg for iOS.  
+You need to edit __build-ffmpeg.sh__ since the default version may not be 4.0.
+```
+##### Change Begin #####
+FF_VERSION="4.0"
+#####  Change End  #####
+```
 
 #### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 Put built "ffmpeg/include" and "ffmpeg/lib" folders into example project's "DLGPlayer/Externals/ffmpeg" folder.  
