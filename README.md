@@ -26,6 +26,55 @@ FF_VERSION="4.0"
 #####  Change End  #####
 ```
 
+You need to edit __audio_convert_neon.S__ if you are about to compile __FFmpeg 4.0 (armv7/armv7s)__.  
+Open the file "__ffmpeg-4.0/libswresample/arm/audio_convert_neon.S__".  
+
+Delete `_swri_oldapi_conv_flt_to_s16_neon:` and `_swri_oldapi_conv_fltp_to_s16_2ch_neon:`.  
+Change `_swri_oldapi_conv_flt_to_s16_neon` to `X(swri_oldapi_conv_flt_to_s16_neon)` and `_swri_oldapi_conv_fltp_to_s16_2ch_neon` to `X(swri_oldapi_conv_fltp_to_s16_2ch_neon)`.  
+
+```
+...
+
+function swri_oldapi_conv_flt_to_s16_neon, export=1
+// >> Delete Begin
+// _swri_oldapi_conv_flt_to_s16_neon:
+// << Delete End
+        subs            r2,  r2,  #8
+        vld1.32         {q0},     [r1,:128]!
+        vcvt.s32.f32    q8,  q0,  #31
+
+...
+
+function swri_oldapi_conv_fltp_to_s16_2ch_neon, export=1
+// >> Delete Begin
+// _swri_oldapi_conv_fltp_to_s16_2ch_neon:
+// << Delete End
+        ldm             r1,  {r1, r3}
+        subs            r2,  r2,  #8
+        vld1.32         {q0},     [r1,:128]!
+
+...
+
+function swri_oldapi_conv_fltp_to_s16_nch_neon, export=1
+        cmp             r3,  #2
+        itt             lt
+        ldrlt           r1,  [r1]
+// >> Change Begin
+//        blt             _swri_oldapi_conv_flt_to_s16_neon
+//        beq             _swri_oldapi_conv_fltp_to_s16_2ch_neon
+        blt             X(swri_oldapi_conv_flt_to_s16_neon)
+        beq             X(swri_oldapi_conv_fltp_to_s16_2ch_neon)
+// << Change End
+
+        push            {r4-r8, lr}
+        cmp             r3,  #4
+        lsl             r12, r3,  #1
+        blt             4f
+
+...
+
+```
+
 #### (3) Put built FFmpeg include files and libraries into DLGPlayer/Externals/ffmpeg folder.  
 Put built "ffmpeg/include" and "ffmpeg/lib" folders into example project's "DLGPlayer/Externals/ffmpeg" folder.  
 
