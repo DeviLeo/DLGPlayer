@@ -86,15 +86,66 @@ TMPDIR=${TMPDIR/%\/} $CWD/$SOURCE/configure \
 Move the **"openssl"** folder into the **"FFmpeg-iOS-build-script"** folder.  
 Make sure the **"build-ffmpeg-openssl.sh"** file is under the **"FFmpeg-iOS-build-script"** folder, too.  
 
-## 6. Run "build-ffmpeg-openssl.sh"
+## 6. Edit "audio_convert_neon.S"  
+This step is especially for __FFmpeg 4.0 (armv7/armv7s)__.  
+If you are about to compile __FFmpeg 4.0 (arm64/i386/x86_64)__ or __lower (armv7/armv7s/arm64/i386/x86_64)__, you can skip this step.  
+Open the file "__ffmpeg-4.0/libswresample/arm/audio_convert_neon.S__".  
+
+Delete `_swri_oldapi_conv_flt_to_s16_neon:` and `_swri_oldapi_conv_fltp_to_s16_2ch_neon:`.  
+Change `_swri_oldapi_conv_flt_to_s16_neon` to `X(swri_oldapi_conv_flt_to_s16_neon)` and `_swri_oldapi_conv_fltp_to_s16_2ch_neon` to `X(swri_oldapi_conv_fltp_to_s16_2ch_neon)`.  
+
+```
+...
+
+function swri_oldapi_conv_flt_to_s16_neon, export=1
+// >> Delete Begin
+// _swri_oldapi_conv_flt_to_s16_neon:
+// << Delete End
+        subs            r2,  r2,  #8
+        vld1.32         {q0},     [r1,:128]!
+        vcvt.s32.f32    q8,  q0,  #31
+
+...
+
+function swri_oldapi_conv_fltp_to_s16_2ch_neon, export=1
+// >> Delete Begin
+// _swri_oldapi_conv_fltp_to_s16_2ch_neon:
+// << Delete End
+        ldm             r1,  {r1, r3}
+        subs            r2,  r2,  #8
+        vld1.32         {q0},     [r1,:128]!
+
+...
+
+function swri_oldapi_conv_fltp_to_s16_nch_neon, export=1
+        cmp             r3,  #2
+        itt             lt
+        ldrlt           r1,  [r1]
+// >> Change Begin
+//        blt             _swri_oldapi_conv_flt_to_s16_neon
+//        beq             _swri_oldapi_conv_fltp_to_s16_2ch_neon
+        blt             X(swri_oldapi_conv_flt_to_s16_neon)
+        beq             X(swri_oldapi_conv_fltp_to_s16_2ch_neon)
+// << Change End
+
+        push            {r4-r8, lr}
+        cmp             r3,  #4
+        lsl             r12, r3,  #1
+        blt             4f
+
+...
+
+```
+
+## 7. Run "build-ffmpeg-openssl.sh"
 Run and wait.  
 
-## 7. Put built FFmpeg include files and libraries into "DLGPlayer/Externals/ffmpeg" folder
+## 8. Put built FFmpeg include files and libraries into "DLGPlayer/Externals/ffmpeg" folder
 Put built **"ffmpeg/include"** and **"ffmpeg/lib"** folders into the example project's **"DLGPlayer/Externals/ffmpeg"** folder.  
 
-## 8. Add OpenSSL into the example project
+## 9. Add OpenSSL into the example project
 Put **"openssl"** folder into the example project's **"DLGPlayer/Externals"** folder.  
 In Xcode, right click **"Externals"** folder, choose **"Add Files to ..."**, select **"openssl"** folder and click **"Add"** button.  
 
-## 9. Run the demo
+## 10. Run the demo
 Build the example project and run the demo on your device or simulator.  
