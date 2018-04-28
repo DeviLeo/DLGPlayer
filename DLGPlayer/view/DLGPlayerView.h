@@ -13,6 +13,7 @@
 @interface DLGPlayerView : UIView
 
 @property (nonatomic) CGSize contentSize;
+@property (nonatomic) CGFloat rotation;
 @property (nonatomic) BOOL isYUV;
 @property (nonatomic) BOOL keepLastFrame;
 

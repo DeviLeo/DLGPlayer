@@ -138,6 +138,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             strongSelf.view.isYUV = [strongSelf.decoder isYUV];
             strongSelf.view.keepLastFrame = [strongSelf.decoder hasPicture] && ![strongSelf.decoder hasVideo];
+            strongSelf.view.rotation = strongSelf.decoder.rotation;
             strongSelf.view.contentSize = CGSizeMake([strongSelf.decoder videoWidth], [strongSelf.decoder videoHeight]);
             strongSelf.view.contentMode = UIViewContentModeScaleAspectFit;
             

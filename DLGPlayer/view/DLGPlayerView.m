@@ -21,12 +21,28 @@
     GLuint _frameBuffer;
     GLuint _renderBuffer;
     GLuint _programHandle;
-    GLuint _positionSlot;
-    GLuint _projection;
     GLint _backingWidth;
     GLint _backingHeight;
-    GLfloat _position[8];
-    GLfloat _texcoord[8];
+    
+    GLuint _positionSlot;
+    GLuint _projectionSlot;
+    GLuint _rotationSlot;
+    GLuint _viewRatioSlot;
+    GLuint _ratioSlot;
+    GLuint _scaleSlot;
+    GLfloat _vec4Position[8];
+    GLfloat _vec2Texcoord[8];
+    GLfloat _mat4Projection[16];
+    GLfloat _mat3Rotation[9];
+    GLfloat _mat3ViewRatio[9];
+    GLfloat _mat3Ratio[9];
+    GLfloat _mat3Scale[9];
+    
+    BOOL _shouldRotate;
+    BOOL _shouldScale;
+    BOOL _isFlipVertical;
+    float _ratio[2];
+    float _scale[2];
 }
 
 @property (nonatomic, strong) DLGPlayerVideoFrame *lastFrame;
@@ -76,6 +92,8 @@
     [self createGLBuffer];
     [self createGLProgram];
     [self updatePosition];
+    [self updateScale];
+    [self updateRotationMatrix];
     [self render:self.lastFrame];
 }
 
@@ -97,24 +115,30 @@
     
     [self initVertex];
     [self initTexCord];
+    [self initProjection];
     
+    self.rotation = 0;
     self.keepLastFrame = NO;
     
     return YES;
 }
 
 - (void)initVertex {
-    _position[0] = -1; _position[1] = -1;
-    _position[2] =  1; _position[3] = -1;
-    _position[4] = -1; _position[5] =  1;
-    _position[6] =  1; _position[7] =  1;
+    _vec4Position[0] = -1; _vec4Position[1] = -1;
+    _vec4Position[2] =  1; _vec4Position[3] = -1;
+    _vec4Position[4] = -1; _vec4Position[5] =  1;
+    _vec4Position[6] =  1; _vec4Position[7] =  1;
 }
 
 - (void)initTexCord {
-    _texcoord[0] = 0; _texcoord[1] = 1;
-    _texcoord[2] = 1; _texcoord[3] = 1;
-    _texcoord[4] = 0; _texcoord[5] = 0;
-    _texcoord[6] = 1; _texcoord[7] = 0;
+    _vec2Texcoord[0] = 0; _vec2Texcoord[1] = 1;
+    _vec2Texcoord[2] = 1; _vec2Texcoord[3] = 1;
+    _vec2Texcoord[4] = 0; _vec2Texcoord[5] = 0;
+    _vec2Texcoord[6] = 1; _vec2Texcoord[7] = 0;
+}
+
+- (void)initProjection {
+    [DLGPlayerView ortho:_mat4Projection];
 }
 
 - (void)createGLBuffer {
@@ -149,7 +173,10 @@
     
     // Load shaders
     NSBundle *bundle = [NSBundle mainBundle];
-    NSString *vertexShaderFile = [bundle pathForResource:@"DLGPlayerVertexShader" ofType:@"glsl"];
+    NSString *vertexShaderFilename = @"DLGPlayerVertexShader";
+    if (_shouldScale) vertexShaderFilename = @"DLGPlayerRotationScaleVertexShader";
+    else if (_shouldRotate) vertexShaderFilename = @"DLGPlayerRotationVertexShader";
+    NSString *vertexShaderFile = [bundle pathForResource:vertexShaderFilename ofType:@"glsl"];
     GLuint vertexShader = [DLGPlayerView loadShader:GL_VERTEX_SHADER withFile:vertexShaderFile];
     NSString *fragmentShaderResource = _isYUV ? @"DLGPlayerYUVFragmentShader" : @"DLGPlayerRGBFragmentShader";
     NSString *fragmentShaderFile = [bundle pathForResource:fragmentShaderResource ofType:@"glsl"];
@@ -186,7 +213,15 @@
     glUseProgram(program);
     
     _positionSlot = glGetAttribLocation(program, "position");
-    _projection = glGetUniformLocation(program, "projection");
+    _projectionSlot = glGetUniformLocation(program, "projection");
+    if (_shouldRotate) {
+        _rotationSlot = glGetUniformLocation(program, "rotation");
+    }
+    if (_shouldScale) {
+        _scaleSlot = glGetUniformLocation(program, "scale");
+        _ratioSlot = glGetUniformLocation(program, "ratio");
+        _viewRatioSlot = glGetUniformLocation(program, "viewratio");
+    }
     _programHandle = program;
 }
 
@@ -198,12 +233,12 @@
 - (void)updatePosition {
     const float cw = _contentSize.width;
     const float ch = _contentSize.height;
-    if (self.contentMode == UIViewContentModeScaleToFill ||
-        cw == 0 || ch == 0) {
-        _position[0] = -1; _position[1] = -1;
-        _position[2] =  1; _position[3] = -1;
-        _position[4] = -1; _position[5] =  1;
-        _position[6] =  1; _position[7] =  1;
+    if (cw == 0 || ch == 0) {
+        _ratio[0] = _ratio[1] = 1;
+        _vec4Position[0] = -1; _vec4Position[1] = -1;
+        _vec4Position[2] =  1; _vec4Position[3] = -1;
+        _vec4Position[4] = -1; _vec4Position[5] =  1;
+        _vec4Position[6] =  1; _vec4Position[7] =  1;
         return;
     }
     
@@ -211,29 +246,79 @@
     const float bh = _backingHeight;
     const float rw = bw / cw; // ratio of width
     const float rh = bh / ch; // ratio of height
-    float ratio = 1;
     if (self.contentMode == UIViewContentModeScaleAspectFit) {
-        ratio = MIN(rw, rh);
+        _ratio[0] = _ratio[1] = MIN(rw, rh);
     } else if (self.contentMode == UIViewContentModeScaleAspectFill) {
-        ratio = MAX(rw, rh);
+        _ratio[0] = _ratio[1] = MAX(rw, rh);
+    } else if (self.contentMode == UIViewContentModeScaleToFill) {
+        _ratio[0] = rw; _ratio[1] = rh;
     }
-    const float w = (cw * ratio) / bw;
-    const float h = (ch * ratio) / bh;
+    const float w = (cw * _ratio[0]) / bw;
+    const float h = (ch * _ratio[1]) / bh;
     
-    _position[0] = -w; _position[1] = -h;
-    _position[2] =  w; _position[3] = -h;
-    _position[4] = -w; _position[5] =  h;
-    _position[6] =  w; _position[7] =  h;
+    _vec4Position[0] = -w; _vec4Position[1] = -h;
+    _vec4Position[2] =  w; _vec4Position[3] = -h;
+    _vec4Position[4] = -w; _vec4Position[5] =  h;
+    _vec4Position[6] =  w; _vec4Position[7] =  h;
+}
+
+- (void)updateScale {
+    if (!_shouldScale) return;
+    const float cw = _contentSize.width ;
+    const float ch = _contentSize.height;
+    if (cw == 0 || ch == 0) {
+        _scale[0] = _scale[1] = 1;
+        return;
+    }
+    
+    const float bw = _backingWidth;
+    const float bh = _backingHeight;
+    const float acw = _shouldScale ? ch * _ratio[1] : cw * _ratio[0];
+    const float ach = _shouldScale ? cw * _ratio[0] : ch * _ratio[1];
+    const float sw = bw / acw; // scale of width
+    const float sh = bh / ach; // scale of height
+    if (self.contentMode == UIViewContentModeScaleAspectFit) {
+        _scale[0] = _scale[1] = MIN(sw, sh);
+    } else if (self.contentMode == UIViewContentModeScaleAspectFill) {
+        _scale[0] = _scale[1] = MAX(sw, sh);
+    } else if (self.contentMode == UIViewContentModeScaleToFill) {
+        _scale[0] = sw; _scale[1] = sh;
+    }
+}
+
+- (void)updateRotationMatrix {
+    if (_shouldRotate) {
+        if (_isFlipVertical) { [DLGPlayerView flipVertical:_mat3Rotation]; }
+        else { [DLGPlayerView rotate:self.rotation matrix:_mat3Rotation]; }
+    }
+    if (_shouldScale) {
+        [DLGPlayerView ratio:(GLfloat)_backingWidth/(GLfloat)_backingHeight matrix:_mat3Ratio];
+        [DLGPlayerView ratio:(GLfloat)_backingHeight/(GLfloat)_backingWidth matrix:_mat3ViewRatio];
+        [DLGPlayerView scale:_scale matrix:_mat3Scale];
+    }
 }
 
 - (void)setContentMode:(UIViewContentMode)contentMode {
     [super setContentMode:contentMode];
     [self updatePosition];
+    [self updateScale];
+    [self updateRotationMatrix];
 }
 
 - (void)setContentSize:(CGSize)contentSize {
     _contentSize = contentSize;
     [self updatePosition];
+    [self updateScale];
+    [self updateRotationMatrix];
+}
+
+- (void)setRotation:(CGFloat)rotation {
+    _rotation = rotation;
+    NSInteger r = round(rotation);
+    _isFlipVertical = (r % 180 == 0);
+    _shouldScale = (!_isFlipVertical && r % 90 == 0);
+    _shouldRotate = (r % 360 != 0);
+    [self reload];
 }
 
 - (void)setIsYUV:(BOOL)isYUV {
@@ -252,14 +337,19 @@
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     
     if ([frame prepareRender:_programHandle]) {
-        GLfloat proj[16];
-        [DLGPlayerView ortho:proj];
-        glUniformMatrix4fv(_projection, 1, GL_FALSE, proj);
-        glVertexAttribPointer(VERTEX_ATTRIBUTE_POSITION, 2, GL_FLOAT, GL_FALSE, 0, _position);
+        glUniformMatrix4fv(_projectionSlot, 1, GL_FALSE, _mat4Projection);
+        if (_shouldRotate) {
+            glUniformMatrix3fv(_rotationSlot, 1, GL_FALSE, _mat3Rotation);
+        }
+        if (_shouldScale) {
+            glUniformMatrix3fv(_ratioSlot, 1, GL_FALSE, _mat3Ratio);
+            glUniformMatrix3fv(_viewRatioSlot, 1, GL_FALSE, _mat3ViewRatio);
+            glUniformMatrix3fv(_scaleSlot, 1, GL_FALSE, _mat3Scale);
+        }
+        glVertexAttribPointer(VERTEX_ATTRIBUTE_POSITION, 2, GL_FLOAT, GL_FALSE, 0, _vec4Position);
         glEnableVertexAttribArray(VERTEX_ATTRIBUTE_POSITION);
-        glVertexAttribPointer(VERTEX_ATTRIBUTE_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, _texcoord);
+        glVertexAttribPointer(VERTEX_ATTRIBUTE_TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, _vec2Texcoord);
         glEnableVertexAttribArray(VERTEX_ATTRIBUTE_TEXCOORD);
-        
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
@@ -348,6 +438,72 @@
     mat4f[13] = ty;
     mat4f[14] = tz;
     mat4f[15] = 1;
+}
+
+/*
+ * Rotate X
+ *  ---------------------
+ * | 1,   0  ,   0   , 0 |
+ * | 0, cos a, -sin a, 0 |
+ * | 0, sin a,  cos a, 0 |
+ * | 0,   0  ,   0   , 1 |
+ *  ---------------------
+ *
+ * Rotate Y
+ *  ---------------------
+ * |  cos a, 0, sin a, 0 |
+ * |    0  , 1,   0  , 0 |
+ * | -sin a, 0, cos a, 0 |
+ * |    0  , 0,   0  , 1 |
+ *  ---------------------
+ *
+ * Rotate Z
+ *  ---------------------
+ * | cos a, -sin a, 0, 0 |
+ * | sin a,  cos a, 0, 0 |
+ * |   0  ,    0  , 1, 0 |
+ * |   0  ,    0  , 0, 1 |
+ *  ---------------------
+ */
++ (void)rotate:(float)degree matrix:(float *)mat3f {
+    float radian = degree * M_PI / 180;
+    float sina = sin(radian);
+    float cosa = cos(radian);
+    mat3f[0] = cosa; mat3f[1] = -sina; mat3f[2] = 0;
+    mat3f[3] = sina; mat3f[4] =  cosa; mat3f[5] = 0;
+    mat3f[6] =    0; mat3f[7] =     0; mat3f[8] = 1;
+}
+
++ (void)flipVertical:(float *)mat3f {
+    mat3f[0] = -1; mat3f[1] =  0; mat3f[2] = 0;
+    mat3f[3] =  0; mat3f[4] = -1; mat3f[5] = 0;
+    mat3f[6] =  0; mat3f[7] =  0; mat3f[8] = 1;
+}
+
+/*
+ *  ---------
+ * | r, 0, 0 |
+ * | 0, 1, 0 |
+ * | 0, 0, 1 |
+ *  ---------
+ */
++ (void)ratio:(double)ratio matrix:(float *)mat3f {
+    mat3f[0] = ratio; mat3f[1] = 0; mat3f[2] = 0;
+    mat3f[3] =     0; mat3f[4] = 1; mat3f[5] = 0;
+    mat3f[6] =     0; mat3f[7] = 0; mat3f[8] = 1;
+}
+
+/*
+ *  ---------
+ * | s, 0, 0 |
+ * | 0, s, 0 |
+ * | 0, 0, 1 |
+ *  ---------
+ */
++ (void)scale:(float *)scale matrix:(float *)mat3f {
+    mat3f[0] = scale[0]; mat3f[1] =        0; mat3f[2] = 0;
+    mat3f[3] =        0; mat3f[4] = scale[1]; mat3f[5] = 0;
+    mat3f[6] =        0; mat3f[7] =        0; mat3f[8] = 1;
 }
 
 @end

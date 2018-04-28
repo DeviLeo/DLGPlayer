@@ -15,6 +15,8 @@
 #import "DLGPlayerVideoYUVFrame.h"
 #import <libavformat/avformat.h>
 #import <libavutil/imgutils.h>
+#import <libavutil/display.h>
+#import <libavutil/eval.h>
 #import <libswscale/swscale.h>
 #import <libswresample/swresample.h>
 #import <Accelerate/Accelerate.h>
@@ -104,6 +106,7 @@ static int interruptCallback(void *context) {
     AVCodecContext *vcodectx = NULL;
     struct SwsContext *swsctx = NULL;
     BOOL isYUV = NO;
+    double rotation = 0;
     int picstream = -1;
     int vstream = [self findVideoStream:fmtctx context:&vcodectx pictureStream:&picstream];
     if (vstream >= 0 && vcodectx != NULL) {
@@ -118,6 +121,7 @@ static int interruptCallback(void *context) {
                                         SWS_BILINEAR, NULL, NULL, NULL);
             }
             [DLGPlayerDecoder stream:fmtctx->streams[vstream] fps:&_videoFPS timebase:&_videoTimebase default:0.04];
+            rotation = [DLGPlayerDecoder rotationFromVideoStream:fmtctx->streams[vstream]];
         }
         
         BOOL swsError = isYUV ? NO : (swsctx == NULL || vswsframe == NULL);
@@ -195,6 +199,7 @@ static int interruptCallback(void *context) {
     self.hasPicture = picstream >= 0;
     self.isEOF = NO;
     
+    self.rotation = rotation;
     int64_t duration = fmtctx->duration;
     self.duration = (duration == AV_NOPTS_VALUE ? -1 : ((double)duration / AV_TIME_BASE));
     self.metadata = [self findMetadata:fmtctx];
@@ -653,6 +658,15 @@ static int interruptCallback(void *context) {
     
     if (fps != NULL) *fps = f;
     if (timebase != NULL) *timebase = t;
+}
+
++ (double)rotationFromVideoStream:(AVStream *)stream {
+    double rotation = 0;
+    AVDictionaryEntry *entry = av_dict_get(stream->metadata, "rotate", NULL, AV_DICT_MATCH_CASE);
+    if (entry && entry->value) { rotation = av_strtod(entry->value, NULL); }
+    uint8_t *display_matrix = av_stream_get_side_data(stream, AV_PKT_DATA_DISPLAYMATRIX, NULL);
+    if (display_matrix) { rotation = -av_display_rotation_get((int32_t *)display_matrix); }
+    return rotation;
 }
 
 @end

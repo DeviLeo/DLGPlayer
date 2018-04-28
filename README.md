@@ -140,6 +140,7 @@ See ***DLGPlayerViewController*** class for more usage details.
 * [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer "https://github.com/robbiehanson/CocoaHTTPServer")
 * [OpenSSL](https://www.openssl.org "https://www.openssl.org")
 * [x2on/OpenSSL-for-iPhone](https://github.com/x2on/OpenSSL-for-iPhone "https://github.com/x2on/OpenSSL-for-iPhone")
+* [An intro to modern OpenGL. Chapter 3: 3D transformation and projection](http://duriansoftware.com/joe/An-intro-to-modern-OpenGL.-Chapter-3:-3D-transformation-and-projection.html "http://duriansoftware.com/joe/An-intro-to-modern-OpenGL.-Chapter-3:-3D-transformation-and-projection.html")
 
 Thank you all!
 

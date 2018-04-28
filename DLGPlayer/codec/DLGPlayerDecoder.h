@@ -16,6 +16,7 @@
 @property (nonatomic) BOOL hasPicture;
 @property (nonatomic) BOOL isEOF;
 
+@property (nonatomic) double rotation;
 @property (nonatomic) double duration;
 @property (nonatomic, strong) NSDictionary *metadata;
 

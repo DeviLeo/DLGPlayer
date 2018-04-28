@@ -72,6 +72,8 @@
 		E8D77ABF1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AAC1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl */; };
 		E8D77AC01E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8D77AAD1E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl */; };
 		E8D77AC11E4F0A3F009C9777 /* DLGPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D77AB21E4F0A3F009C9777 /* DLGPlayerView.m */; };
+		E8DCC20220944097001EB598 /* DLGPlayerRotationVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8DCC20120944097001EB598 /* DLGPlayerRotationVertexShader.glsl */; };
+		E8DCC2042094424E001EB598 /* DLGPlayerRotationScaleVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = E8DCC2032094424E001EB598 /* DLGPlayerRotationScaleVertexShader.glsl */; };
 		E8E872E9209175870006B20D /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8E8726B209175870006B20D /* libavutil.a */; };
 		E8E872EA209175870006B20D /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8E8726C209175870006B20D /* libavfilter.a */; };
 		E8E872EB209175870006B20D /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E8E8726D209175870006B20D /* libavcodec.a */; };
@@ -200,6 +202,8 @@
 		E8D77AAF1E4F0A3F009C9777 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/DLGPlayerStrings.strings"; sourceTree = "<group>"; };
 		E8D77AB11E4F0A3F009C9777 /* DLGPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGPlayerView.h; sourceTree = "<group>"; };
 		E8D77AB21E4F0A3F009C9777 /* DLGPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGPlayerView.m; sourceTree = "<group>"; };
+		E8DCC20120944097001EB598 /* DLGPlayerRotationVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerRotationVertexShader.glsl; sourceTree = "<group>"; };
+		E8DCC2032094424E001EB598 /* DLGPlayerRotationScaleVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DLGPlayerRotationScaleVertexShader.glsl; sourceTree = "<group>"; };
 		E8E8726B209175870006B20D /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		E8E8726C209175870006B20D /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavfilter.a; sourceTree = "<group>"; };
 		E8E8726D209175870006B20D /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavcodec.a; sourceTree = "<group>"; };
@@ -626,8 +630,10 @@
 			isa = PBXGroup;
 			children = (
 				E8D77AA91E4F0A3F009C9777 /* DLGPlayerStrings.strings */,
-				E8D77AAB1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl */,
 				E8D77AAC1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl */,
+				E8DCC20120944097001EB598 /* DLGPlayerRotationVertexShader.glsl */,
+				E8DCC2032094424E001EB598 /* DLGPlayerRotationScaleVertexShader.glsl */,
+				E8D77AAB1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl */,
 				E8D77AAD1E4F0A3F009C9777 /* DLGPlayerYUVFragmentShader.glsl */,
 			);
 			path = resource;
@@ -890,8 +896,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E825C5191E62990F006E1877 /* web in Resources */,
+				E8DCC20220944097001EB598 /* DLGPlayerRotationVertexShader.glsl in Resources */,
 				C1C491AF1DED4B6A0004B892 /* LaunchScreen.storyboard in Resources */,
 				E8D77ABE1E4F0A3F009C9777 /* DLGPlayerRGBFragmentShader.glsl in Resources */,
+				E8DCC2042094424E001EB598 /* DLGPlayerRotationScaleVertexShader.glsl in Resources */,
 				C1C491AC1DED4B6A0004B892 /* Assets.xcassets in Resources */,
 				E8D77ABF1E4F0A3F009C9777 /* DLGPlayerVertexShader.glsl in Resources */,
 				E8D77ABD1E4F0A3F009C9777 /* DLGPlayerStrings.strings in Resources */,
@@ -1108,8 +1116,10 @@
 					"$(PROJECT_DIR)/DLGPlayer/Externals/ffmpeg/lib",
 					"$(PROJECT_DIR)/DLGPlayer/Externals/openssl/lib",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.devileo.DLGPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -1127,8 +1137,10 @@
 					"$(PROJECT_DIR)/DLGPlayer/Externals/ffmpeg/lib",
 					"$(PROJECT_DIR)/DLGPlayer/Externals/openssl/lib",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.devileo.DLGPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
